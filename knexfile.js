@@ -8,9 +8,9 @@ module.exports = {
   client: 'mysql',
   connection: {
     host: "us-cdbr-east-06.cleardb.net",
-    user: "bf2991a8fd8548",
-    password: "827d0c94",
-    database: "capstone",
+    user: "bc9c6ad1ff5ef3",
+    password: "2a835485",
+    database: "heroku_e146d2c81d5c302",
     charset: "utf8"
   }
 };
