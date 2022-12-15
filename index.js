@@ -22,4 +22,4 @@ app.use("/carts", cartsRoutes);
 app.use("/purchase", purchaseRoutes);
 app.use("/orders", ordersRoutes);
 
-app.listen(PORT, () => console.log(`${SERVER_URL} on port ${PORT}`));
+app.listen(PORT, () => console.log(`app running on port ${PORT}`));
