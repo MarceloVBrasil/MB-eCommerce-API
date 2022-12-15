@@ -121,6 +121,8 @@ exports.getTotalAmount = async (req, res) => {
 
 exports.processPayment = async (req, res) => {
     const { amount, name, userId } = req.body
+    const index = req.rawHeaders.findIndex(key => key === 'Origin')
+    const originURL = req.rawHeaders[index+1]
 
       const session = await stripe.checkout.sessions.create({
     line_items: [
@@ -137,9 +139,9 @@ exports.processPayment = async (req, res) => {
     ],
     customer_email: await getUserEmail(userId),
     mode: 'payment',
-    success_url: `${process.env.CLIENT_URL}?sessionId={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${process.env.CLIENT_URL}`,
-  });
+    success_url: `${originURL}?sessionId={CHECKOUT_SESSION_ID}`,
+    cancel_url: `${originURL}`,
+      });
 
   res.json({url: session.url, id: session.id})
 }
