@@ -4,7 +4,8 @@
  */
 exports.up = function(knex) {
     return knex.schema.createTable('order', (table) => {
-        table.increments('id'); // primary key
+      table.increments('id') // primary key
+        .unsigned();
         table.bigInteger('order_date').notNullable().defaultTo(Date.now());
         table.bigInteger('order_sent');
         table.integer('cart_id')

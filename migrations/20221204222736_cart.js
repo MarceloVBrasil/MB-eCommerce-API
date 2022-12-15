@@ -4,7 +4,8 @@
  */
 exports.up = function(knex) {
     return knex.schema.createTable('cart', (table) => {
-      table.increments('id'); // primary key
+      table.increments('id') // primary key
+        .unsigned();
       table.string('status', 7).checkIn(['open', 'closed']).defaultTo('open')
         table.integer('user_id')
             .unsigned()

@@ -4,7 +4,8 @@
  */
 exports.up = function(knex) {
     return knex.schema.createTable('comment', (table) => {
-        table.increments('id'); // primary key
+      table.increments('id') // primary key
+        .unsigned();
         table.string('message', 200).notNullable();
         table.bigInteger('timestamp').defaultTo(Date.now());
         table.integer('user_id')

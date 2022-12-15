@@ -6,7 +6,8 @@
  */
 exports.up = function(knex) {
     return knex.schema.createTable('purchase', (table) => {
-        table.increments('id'); // primary key
+        table.increments('id') // primary key
+            .unsigned();
         table.integer('quantity').notNullable().defaultTo(1)
         table.integer('product_id')
             .unsigned()

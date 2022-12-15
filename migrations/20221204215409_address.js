@@ -4,7 +4,8 @@
  */
 exports.up = function(knex) {
    return knex.schema.createTable('address', (table) => {
-        table.increments('id'); // primary key
+     table.increments('id') // primary key
+       .unsigned();
         table.string('street', 30).notNullable();
         table.string('city', 30).notNullable();
         table.string('complement', 20)
