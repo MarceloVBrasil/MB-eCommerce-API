@@ -7,7 +7,7 @@ exports.getAll = async (_req, res) => {
       .from("product");
     res.json(data);
   } catch (error) {
-    res.status(503).send("Error getting products data");
+    res.status(503).send("Error getting products data " + error);
   }
 };
 
