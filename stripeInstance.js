@@ -1,1 +1,0 @@
-exports.stripeInstance = require("stripe")(process.env.STRIPE_PRIVATE_KEY)

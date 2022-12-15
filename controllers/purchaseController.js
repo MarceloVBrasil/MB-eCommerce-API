@@ -1,5 +1,5 @@
 const knex = require("knex")(require("../knexfile"));
-const stripe = require("../stripeInstance")
+const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY)
 
 exports.puItemOnHold = async (req, res) => {
     try {
@@ -122,7 +122,7 @@ exports.getTotalAmount = async (req, res) => {
 exports.processPayment = async (req, res) => {
     const { amount, name, userId } = req.body
     const index = req.rawHeaders.findIndex(key => key === 'Origin')
-    const originURL = req.rawHeaders[index+1]
+    const originURL = req.rawHeaders[index + 1]
 
       const session = await stripe.checkout.sessions.create({
     line_items: [

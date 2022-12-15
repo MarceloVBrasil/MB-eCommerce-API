@@ -1,5 +1,5 @@
 const knex = require("knex")(require("../knexfile"));
-const stripe = require("../stripeInstance")
+const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY)
 const { sendReceipt } = require("../mailer");
 
 exports.paymentSuccessful = async (req, res) => {
@@ -10,7 +10,7 @@ exports.paymentSuccessful = async (req, res) => {
         if (userId.id !== parseInt(req.query.userId)) return res.status(400).send("Email invalid")
         const products = await getProductsWithQuantity(userId.id)
         const cartId = await getCartId(userId)
-        await closeCart(userId)
+        await closeCart(cartId)
         await createNewPaymentOrder(cartId)
         const orderId = await getOrderId(cartId)
         const userName = await getUserName(userId)
@@ -37,13 +37,12 @@ async function getUserId(email) {
     }
 }
 
-async function closeCart(userId) {
+async function closeCart(cartId) {
     try {
-        const id = userId.id ? userId.id : userId
+        const id = cartId.id ? cartId.id : cartId
         const data = await knex('cart')
-            .where("id", id)
+            .where({ id: id })
             .update({ status: "closed" })
-
         return data
     } catch (error) {
         return error
