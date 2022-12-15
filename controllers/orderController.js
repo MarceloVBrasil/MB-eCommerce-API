@@ -39,9 +39,11 @@ async function getUserId(email) {
 
 async function closeCart(userId) {
     try {
+        const id = userId.id ? userId.id : userId
         const data = await knex('cart')
-            .where("id", userId)
+            .where("id", id)
             .update({ status: "closed" })
+
         return data
     } catch (error) {
         return error
@@ -103,10 +105,11 @@ async function getOrderId(cartId) {
 
 async function getUserName(id) {
     try {
+        const userId = id.id ? id.id : id
         const data = await knex
             .select("name")
             .from("user")
-            .where("id", id)
+            .where("id", userId)
             .first()
         return data.name
     } catch (error) {
