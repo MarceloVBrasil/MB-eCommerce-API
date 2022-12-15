@@ -1,5 +1,5 @@
 const knex = require("knex")(require("../knexfile"));
-const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
+const stripe = require("../stripeInstance")
 const { sendReceipt } = require("../mailer");
 
 exports.paymentSuccessful = async (req, res) => {
