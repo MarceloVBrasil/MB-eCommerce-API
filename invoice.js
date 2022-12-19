@@ -1,7 +1,7 @@
 const easyInvoice = require("easyinvoice")
 require("dotenv").config()
 
-function invoiceData(products, invoiceNumber, today, futureDate) {
+function invoiceData(products, invoiceNumber, today) {
     const data = {
         "images": {
             // The logo on top of your invoice
@@ -22,7 +22,7 @@ function invoiceData(products, invoiceNumber, today, futureDate) {
         // Invoice data
         "date": today,
         // Invoice due date
-        "due-date": futureDate
+        "due-date": today
     },
 
         // The products you would like to see on your invoice

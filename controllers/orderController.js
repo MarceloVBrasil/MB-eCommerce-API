@@ -15,7 +15,7 @@ exports.paymentSuccessful = async (req, res) => {
         const orderId = await getOrderId(cartId)
         const userName = await getUserName(userId)
 
-       if(Array.isArray(products)) await sendReceipt(email, products, orderId, getTodaysDate(), getFutureDate(15), userName)
+       if(Array.isArray(products)) await sendReceipt(email, products, orderId, getTodaysDate(), getTodaysDate(), userName)
 
         res.send("payment made successfully!")
     }
@@ -123,13 +123,4 @@ function makeNumberTwoDigits(number) {
 function getTodaysDate() {
     const date = new Date(Date.now())
     return `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`
-}
-
-function getFutureDate(daysInTheFuture) {
-  const futureDate = new Date(getTodaysDate());
-    futureDate.setDate(futureDate.getDate() + daysInTheFuture + 1);
-    const futureYear = futureDate.getFullYear()
-    const futureMonth = makeNumberTwoDigits(futureDate.getMonth() + 1)
-    const futureDay = makeNumberTwoDigits(futureDate.getDate())
-  return `${futureYear}-${futureMonth}-${futureDay}`;
 }
