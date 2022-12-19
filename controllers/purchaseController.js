@@ -5,6 +5,8 @@ exports.puItemOnHold = async (req, res) => {
     try {
         const cartId = req.body.cartId
         const productId = req.params.productId
+        if(isNaN(productId) || productId <= 0) return res.status(400).send("Invalid product id")
+        if (isNaN(cartId) || cartId <= 0) return res.status(400).send("Invalid cart id")
         const data = await knex('purchase').insert({ cart_id: cartId, product_id: productId })
         res.status(201).json(data[0])
     } catch (error) {
@@ -15,6 +17,8 @@ exports.puItemOnHold = async (req, res) => {
 exports.checkIfItemIsInCart = async (req, res) => {
     try {
         const { productId, cartId } = req.params;
+        if(isNaN(productId) || productId <= 0) return res.status(400).send("Invalid product id")
+        if (isNaN(cartId) || cartId <= 0) return res.status(400).send("Invalid cart id")
         const data = await knex('purchase')
             .where("product_id", productId)
             .andWhere("cart_id", cartId)
@@ -30,6 +34,10 @@ exports.updatePurchaseQuantity = async (req, res) => {
     try {
         const { increment, cartId } = req.body
         const productId = req.params.productId
+        if(isNaN(productId) || productId <= 0) return res.status(400).send("Invalid product id")
+        if (isNaN(cartId) || cartId <= 0) return res.status(400).send("Invalid cart id")
+        if (increment !== true && increment !== false) return res.status(400).send("Invalid increment")
+        
         let data;
         if (increment) {
             data = await knex("purchase")
@@ -53,6 +61,7 @@ exports.updatePurchaseQuantity = async (req, res) => {
 exports.getTotalQuantityInCart = async (req, res) => {
     try {
         const { cartId } = req.params;
+        if (isNaN(cartId) || cartId <= 0) return res.status(400).send("Invalid cart id")
 
         const total = await knex("purchase")
             .join("cart", "cart_id", "cart.id")
@@ -70,6 +79,7 @@ exports.getTotalQuantityInCart = async (req, res) => {
 exports.getQuantityPerProduct = async (req, res) => {
     try {
         const { cartId } = req.params;
+        if (isNaN(cartId) || cartId <= 0) return res.status(400).send("Invalid cart id")
 
         const data = await knex("purchase")
             .join("cart", "cart_id", "cart.id")
@@ -87,6 +97,8 @@ exports.getQuantityPerProduct = async (req, res) => {
 exports.getQuantityByProductId = async (req, res) => {
     try {
         const { productId, cartId } = req.params;
+        if(isNaN(productId) || productId <= 0) return res.status(400).send("Invalid product id")
+        if (isNaN(cartId) || cartId <= 0) return res.status(400).send("Invalid cart id")
 
         const data = await knex
             .select("quantity")
@@ -104,7 +116,8 @@ exports.getQuantityByProductId = async (req, res) => {
 
 exports.getTotalAmount = async (req, res) => {
     try {
-        const {cartId} = req.params
+        const { cartId } = req.params
+        if (isNaN(cartId) || cartId <= 0) return res.status(400).send("Invalid cart id")
         const data = await knex("purchase")
             .join("product", "product_id", "=", "product.id")
             .join("cart", "cart_id", "cart.id")
@@ -122,6 +135,9 @@ exports.getTotalAmount = async (req, res) => {
 
 exports.processPayment = async (req, res) => {
     const { amount, name, userId } = req.body
+    if(isNaN(userId) || userId <= 0) return res.status(400).send("Invalid user id")
+    if (isNaN(amount) || amount <= 0) return res.status(400).send("Invalid amount")
+    
     const index = req.rawHeaders.findIndex(key => key === 'Origin')
     const originURL = req.rawHeaders[index + 1]
 
@@ -148,6 +164,7 @@ exports.processPayment = async (req, res) => {
 }
 
 async function getUserEmail(id) {
+    if(isNaN(id) || id <= 0) return res.status(400).send("Invalid id")
     try {
         const data = await knex
             .select("email")
