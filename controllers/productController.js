@@ -14,6 +14,7 @@ exports.getAll = async (_req, res) => {
 exports.getProductById = async (req, res) => {
   try {
     const productId = req.params.productId
+    if(isNaN(productId) || productId <= 0) return res.status(400).send("Invalid product id")
     const product = await knex("product")
       .join("brand", "brand_id", "brand.id")
       .join("category", "category_id", "category.id")

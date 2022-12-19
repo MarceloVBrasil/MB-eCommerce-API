@@ -38,8 +38,9 @@ async function getUserId(email) {
 }
 
 async function closeCart(cartId) {
+    const id = cartId.id ? cartId.id : cartId
+    if (isNaN(id) || id <= 0) return res.status(400).send("Invalid cart id")
     try {
-        const id = cartId.id ? cartId.id : cartId
         const data = await knex('cart')
             .where({ id: id })
             .update({ status: "closed" })
@@ -50,6 +51,7 @@ async function closeCart(cartId) {
 }
 
 async function createNewPaymentOrder(cartId) {
+    if (isNaN(cartId.id) || cartId.id <= 0) return res.status(400).send("Invalid cart id")
     try {
         await knex('order')
             .insert({ order_date: Date.now(), cart_id: cartId.id })
@@ -60,6 +62,7 @@ async function createNewPaymentOrder(cartId) {
 }
 
 async function getProductsWithQuantity(userId) {
+    if (isNaN(userId) || userId <= 0) return res.status(400).send("Invalid user id")
     const cartId = await getCartId(userId)
     try {
         const data = await knex("purchase")
@@ -76,8 +79,9 @@ async function getProductsWithQuantity(userId) {
 }
 
 async function getCartId(userId) {
+    const id = userId.id ? userId.id : userId
+    if (isNaN(id) || id <= 0) return res.status(400).send("Invalid user id")
     try {
-        const id = userId.id ? userId.id : userId
         const data = await knex
             .select("id")
             .from("cart")
@@ -91,6 +95,7 @@ async function getCartId(userId) {
 }
 
 async function getOrderId(cartId) {
+    if (isNaN(cartId.id) || cartId.id <= 0) return res.status(400).send("Invalid cart id")
     try {
         const data = await knex
             .select("id")
@@ -104,8 +109,9 @@ async function getOrderId(cartId) {
 }
 
 async function getUserName(id) {
+    const userId = id.id ? id.id : id
+    if (isNaN(userId) || userId <= 0) return res.status(400).send("Invalid user id")
     try {
-        const userId = id.id ? id.id : id
         const data = await knex
             .select("name")
             .from("user")
@@ -115,10 +121,6 @@ async function getUserName(id) {
     } catch (error) {
         return error
     }
-}
-
-function makeNumberTwoDigits(number) {
-    return number < 10 ? `0` + number : number;
 }
 
 function getTodaysDate() {
