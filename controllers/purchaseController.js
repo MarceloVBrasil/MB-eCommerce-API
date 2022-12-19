@@ -39,7 +39,8 @@ exports.updatePurchaseQuantity = async (req, res) => {
         } else {
             data = await knex("purchase")
             .where("cart_id", cartId)
-            .andWhere("product_id", productId)
+                .andWhere("product_id", productId)
+                .andWhere("quantity", ">", 0)
             .decrement('quantity', 1)
         }
          

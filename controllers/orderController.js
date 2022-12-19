@@ -67,7 +67,8 @@ async function getProductsWithQuantity(userId) {
             .join("product", "product_id", "product.id")
             .select("product.name", "purchase.quantity", "product.price")
             .where("cart_id", cartId.id)
-            .andWhere("cart.status", "open")        
+            .andWhere("cart.status", "open")
+            .andWhere("purchase.quantity", ">", "0")
         return data        
     } catch (error) {
        return error
