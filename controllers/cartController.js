@@ -13,6 +13,7 @@ exports.createNewCart = async (req, res) => {
 exports.checkIfCartIsOpen = async (req, res) => {
     try {
         const userId = req.params.userId
+        if(isNaN(userId) || userId <= 0) return res.status(400).send("Invalid user id")
         const data = await knex
             .select("id")
             .from("cart")
