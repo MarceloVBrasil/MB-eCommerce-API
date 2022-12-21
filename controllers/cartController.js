@@ -23,3 +23,20 @@ exports.checkIfCartIsOpen = async (req, res) => {
         res.status(503).send("Error checking for open cart")
     }
 }
+
+exports.getProductsInCart = async (req, res) => {
+    try {
+        const { userId, orderId } = req.params
+        if (!userId || !orderId) return res.status(400).send("Invalid userId or orderId")
+        const data = await knex("purchase")
+            .join("product", "purchase.product_id", "product.id")
+            .join("order", "purchase.cart_id", "order.cart_id")
+            .join("cart", "purchase.cart_id", "cart.id")
+            .select("product.name", "purchase.quantity", "product.image")
+            .where("order.id", orderId)
+            .andWhere("cart.user_id", userId)
+        res.send(data)
+    } catch (error) {
+        res.status(503).send("Error getting products in cart")
+    }
+}

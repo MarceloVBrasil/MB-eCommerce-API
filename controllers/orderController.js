@@ -117,11 +117,44 @@ async function getUserName(id) {
     }
 }
 
-function makeNumberTwoDigits(number) {
-    return number < 10 ? `0` + number : number;
+exports.getOrdersByUserId = async (req, res) => {
+    try {
+        const { userId } = req.params
+        if (!userId) return res.status(400).send("Cannot get orders: Invalid user id")
+        const data = await knex('purchase')
+            .join('cart', 'cart_id', 'cart.id')
+            .join('product', 'product_id', 'product.id')
+            .join('order', 'cart.id', 'order.cart_id')
+            .select('product.price', 'purchase.quantity', 'order.id')
+            .where("cart.status", "closed")
+            .andWhere("cart.user_id", userId)
+        const dataWIthTotalPerProduct = data.map(d => {
+            return { total: d.price * d.quantity, orderId: d.id }
+        })
+        const dataWithTotalPerOrder = groupArrayOfObjectsById(dataWIthTotalPerProduct)
+        res.json(dataWithTotalPerOrder)
+    } catch (error) {
+        res.status(503).send("Error getting user orders")
+    }
 }
 
 function getTodaysDate() {
     const date = new Date(Date.now())
     return `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`
+}
+
+function groupArrayOfObjectsById(array) {
+    const keys = []
+    return array.map(element => {
+        if (!keys.includes(element.orderId)) {
+            keys.push(element.orderId)
+            return {
+                orderId: element.orderId,
+                total: array.reduce((total, current) => {
+                    if (current.orderId === element.orderId) return total + current.total
+                    return total
+                }, 0)
+            };
+        }
+    }).filter(element => element !== undefined);
 }
