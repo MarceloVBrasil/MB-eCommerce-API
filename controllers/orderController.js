@@ -131,11 +131,11 @@ exports.getOrdersByUserId = async (req, res) => {
             .join('cart', 'cart_id', 'cart.id')
             .join('product', 'product_id', 'product.id')
             .join('order', 'cart.id', 'order.cart_id')
-            .select('product.price', 'purchase.quantity', 'order.id')
+            .select('product.price', 'purchase.quantity', 'order.id', 'order.order_date', 'order.order_sent')
             .where("cart.status", "closed")
             .andWhere("cart.user_id", userId)
         const dataWIthTotalPerProduct = data.map(d => {
-            return { total: d.price * d.quantity, orderId: d.id }
+            return { total: d.price * d.quantity, orderId: d.id, orderDate: d.order_date, orderSent: d.order_sent !== null }
         })
         const dataWithTotalPerOrder = groupArrayOfObjectsById(dataWIthTotalPerProduct)
         res.json(dataWithTotalPerOrder)
@@ -156,6 +156,8 @@ function groupArrayOfObjectsById(array) {
             keys.push(element.orderId)
             return {
                 orderId: element.orderId,
+                orderDate: element.orderDate,
+                orderSent: element.orderSent,
                 total: array.reduce((total, current) => {
                     if (current.orderId === element.orderId) return total + current.total
                     return total
