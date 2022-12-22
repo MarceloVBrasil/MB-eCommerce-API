@@ -33,10 +33,10 @@ exports.getProductsInCart = async (req, res) => {
             .join("product", "purchase.product_id", "product.id")
             .join("order", "purchase.cart_id", "order.cart_id")
             .join("cart", "purchase.cart_id", "cart.id")
-            .select("product.name", "purchase.quantity", "product.image")
+            .select("product.name", "purchase.quantity", "order.id")
             .where("order.id", orderId)
             .andWhere("cart.user_id", userId)
-        res.send(data)
+        res.json(data)
     } catch (error) {
         res.status(503).send("Error getting products in cart")
     }
