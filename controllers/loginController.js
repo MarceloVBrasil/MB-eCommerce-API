@@ -8,7 +8,12 @@ exports.login = async (req, res) => {
       const { email, password } = req.body
     if (!email || !password) return res.status(400).send("Error: Fill in required fields")
 
-      const user = await knex.select("*").from("user").where("email", email).first()
+    const user = await knex("user")
+      .join("address", "user.id", "address.user_id")
+      .select("user.id", "user.password", "user.email", "user.name", "address.city", "address.province",
+        "address.street", "address.complement", "address.postalCode")
+      .where("user.email", email)
+      .first()
 
       if (user && bcrypt.compareSync(password, user.password)) {
         const token = jwt.sign({
