@@ -10,6 +10,7 @@ const commentsRoutes = require("./routes/commentsRoute");
 const cartsRoutes = require("./routes/cartsRoute");
 const purchaseRoutes = require("./routes/purchaseRoute");
 const ordersRoutes = require('./routes/ordersRoute')
+const usersRoutes = require('./routes/usersRoute')
 
 app.use(express.json());
 app.use(cors());
@@ -21,5 +22,6 @@ app.use("/comments", commentsRoutes);
 app.use("/carts", cartsRoutes);
 app.use("/purchase", purchaseRoutes);
 app.use("/orders", ordersRoutes);
+app.use("/users", usersRoutes);
 
 app.listen(PORT, () => console.log(`app running on port ${PORT}`));
