@@ -1,4 +1,4 @@
-export function validateEmail(email) {
+ function validateEmail(email) {
   if (!email.includes("@") || !email.includes(".")) return false;
 
   const [username, domainExtension] = email.split("@");
@@ -10,7 +10,7 @@ export function validateEmail(email) {
   return true;
 }
 
-export function validatePostalCode(postalCode) {
+ function validatePostalCode(postalCode) {
   if (postalCode.length < 6 || postalCode.length > 7) return false;
   if (postalCode.length === 7 && !validSeparateCharacter(postalCode[3]))
     return false;
@@ -42,3 +42,5 @@ function oddDigitsAreNumbers(str) {
 function isLetter(c) {
   return c.toLowerCase() !== c.toUpperCase();
 }
+
+module.exports = {validateEmail, validatePostalCode}
