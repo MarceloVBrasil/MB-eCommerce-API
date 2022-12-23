@@ -1,10 +1,14 @@
 const knex = require("knex")(require("../knexfile"));
-const bcrypt = require("bcryptjs")
+const bcrypt = require("bcryptjs");
+const { validateEmail, validatePostalCode } = require("../validate");
 
 exports.updateUser = async (req, res) => {
     try {
         const { name, password, email, street, city, province, complement, postalCode } = req.body
         const { userId } = req.params
+        if(!validateEmail(email)) res.status(400).send("Error: Please enter a valid email")
+        if (!validatePostalCode(postalCode)) res.status(400).send("Error: Please enter a valid postal code")
+        
         const userEmail = await getUserEmail(userId)
         const emailExists = await checkIfEmailExists(email)
         if (!name || !password || !email || !street || !city || !province || !postalCode)
