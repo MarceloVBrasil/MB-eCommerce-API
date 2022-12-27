@@ -32,7 +32,7 @@ function generateSalesReceipt(client, order) {
                  if(_err) console.log(_err)
                  console.log(_res)
              sendPDF("marcelovitalbrasil92@gmail.com", "MB e-Commerce: Sales Receipt",
-                 "<h1>You have 1 order!</h1>", "https://mbecommerce.herokuapp.com/pdf/ejs.pdf", `sales-${order.id}.pdf`)
+                 "<h1>You have 1 order!</h1>", "https://mbecommerce.herokuapp.com/pdf/ejs.pdf", `sales-${order.orderId}.pdf`)
          })
     })
 }
