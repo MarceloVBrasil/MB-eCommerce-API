@@ -37,4 +37,15 @@ async function sendReceipt(email, products, invoiceNumber, today, futureDate, re
   });
 }
 
-module.exports = {sendReceipt}
+function sendPDF(email, subject, htmlContent, pdfURL, pdfName) {
+  return sendEmail({
+    email,
+    subject,
+    htmlContent,
+    attachment: [
+      {url: pdfURL, name: pdfName}
+    ]
+  })  
+}
+
+module.exports = {sendReceipt, sendPDF}

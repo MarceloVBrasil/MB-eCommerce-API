@@ -3,6 +3,7 @@ const cors = require("cors");
 const express = require("express");
 const app = express();
 const { PORT = 8080, SERVER_URL } = process.env;
+
 const productsRoutes = require("./routes/productsRoute");
 const registerRoutes = require("./routes/registerRoute");
 const loginRoutes = require("./routes/loginRoute");
@@ -14,7 +15,10 @@ const usersRoutes = require('./routes/usersRoute')
 
 app.use(express.json());
 app.use(cors());
+
 app.use("/images", express.static("./public/images"));
+app.use("/pdf", express.static("./public/pdf"));
+
 app.use("/products", productsRoutes);
 app.use("/register", registerRoutes);
 app.use("/login", loginRoutes);

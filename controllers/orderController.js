@@ -1,6 +1,9 @@
 const knex = require("knex")(require("../knexfile"));
 const stripe = require("stripe")("sk_test_51M3lWoBv6xxhS7gsfIUIgtVQf5to2Z1YHLbLH7RtoRnJgikAtapiqBwofni4UrZVF3XSDNqgvGfwgEnG0cbWReZu0002X32Wi8")
 const { sendReceipt } = require("../mailer");
+const { generateSalesReceipt } = require("../pdf")
+const userController = require("./userController")
+
 
 exports.paymentSuccessful = async (req, res) => {
     try {
@@ -15,7 +18,12 @@ exports.paymentSuccessful = async (req, res) => {
         const orderId = await getOrderId(cartId)
         const userName = await getUserName(userId)
 
-       if(Array.isArray(products)) await sendReceipt(email, products, orderId, getTodaysDate(), getTodaysDate(), userName)
+        const recipient = await userController.getUserAddressWithName(userId)
+        const order = { orderId, date: getTodaysDate(), products }
+        if (Array.isArray(products)) {
+            await sendReceipt(email, products, orderId, getTodaysDate(), getTodaysDate(), userName)
+            generateSalesReceipt(recipient, order)
+       }
 
         res.send("payment made successfully!")
     }
@@ -72,7 +80,10 @@ async function getProductsWithQuantity(userId) {
             .where("cart_id", cartId.id)
             .andWhere("cart.status", "open")
             .andWhere("purchase.quantity", ">", "0")
-        return data        
+        const dataWithTotalPerProduct = data.map(d => {
+            return {...d, total: d.price * d.quantity}
+        })
+        return dataWithTotalPerProduct  
     } catch (error) {
        return error
     }

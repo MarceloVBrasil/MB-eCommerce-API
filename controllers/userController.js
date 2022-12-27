@@ -27,6 +27,20 @@ exports.updateUser = async (req, res) => {
     }
 }
 
+exports.getUserAddressWithName = async (id) => {
+    try {
+        const userId = id.id ? id.id : id;
+        const data = knex("address")
+            .join("user", "address.user_id", "user.id")
+            .select("user.name", "address.complement", "address.city", "address.postalCode", "address.province", "address.street")
+            .where("user.id", userId)
+        .first()
+        return data
+    } catch (error) {
+        return error
+    }
+}
+
 async function checkIfEmailExists(email) {
     const data = await knex
     .select("email")

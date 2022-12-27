@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Order</title>
+    <link rel="stylesheet" href="http://localhost:5000/styles/global.css">
+    <link rel="stylesheet" href="http://localhost:5000/styles/header.css">
+    <link rel="stylesheet" href="http://localhost:5000/styles/receipt.css">
+    <link rel="stylesheet" href="http://localhost:5000/styles/footer.css">
+</head>
+<body>
+    <header class="header">
+        <img src="https://cdn.dribbble.com/users/2948332/screenshots/5926397/media/97472cb011b51f566f0ab93c11d967d1.jpg?compress=1&resize=1000x750&vertical=top" alt="logo" class="header__logo">
+        <div class="header-client-info">
+            <h1 class="header-client-info__title">Order Receipt</h1>
+            <h2 class="header-client-info__name"><%= name %></h2>
+            <p class="header-client-info__address"><%= complement %> <%= street %></p>
+            <p class="header-client-info__address"><%= city %>-<%= province %></p>
+            <p class="header-client-info__address"><%= postalCode%>, Canada</p>
+        </div>
+    </header>
+    <section class="receipt-header">
+        <div class="receipt-header-info">
+            <p class="receipt-header-info__title"><span>Number:</span><%= orderId%></p>
+            <p class="receipt-header-info__title"><span>Date:</span><%= date%></p>
+        </div>
+    </section>
+    <section class="receipt-products">
+        <span class="receipt-products-header">
+            <span  class="receipt-products-header__title receipt-products-header__title--text">Products</span>
+            <span class="receipt-products-header__title receipt-products-header__title--number">Quantity</span>
+            <span class="receipt-products-header__title receipt-products-header__title--number">Price</span>
+            <span class="receipt-products-header__title receipt-products-header__title--number">Total</span>
+        </span>
+        <span class="receipt-products-container">
+            <% products.forEach(product => { %>
+                <span class="receipt-products-info">
+                    <span  class="receipt-products-info__info receipt-products-info__info--text"><%= product.name%></span>
+                    <span class="receipt-products-info__info receipt-products-info__info--number receipt-products-info__info--number-quantity"><%= product.quantity%></span>
+                    <span class="receipt-products-info__info receipt-products-info__info--number receipt-products-info__info--number-price"><%= product.price%></span>
+                    <span class="receipt-products-info__info receipt-products-info__info--number receipt-products-info__info--number-total"><%= product.total%></span>
+                </span>
+                <% }) %>
+            </span>
+        <span class="receipt-total">
+            <span class="receipt-total__text">Total: </span>
+            <span class="receipt-total__price"><%= total%></span>
+        </span>
+    </section>
+    <footer class="footer">
+        &copy; MB e-Commerce
+    </footer>
+</body>
+</html>
