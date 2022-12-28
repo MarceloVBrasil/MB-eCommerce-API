@@ -29,8 +29,8 @@ function generateSalesReceipt(client, order) {
             total: priceTag(total)
     },
          (_err, html) => {
-             console.log("antes do pdf")
-            if(_err) console.log(_err)
+             console.log("antes do buffer")
+             console.log(_err)
              pdf.create(html, {}).toBuffer((_err, buffer) => {
                  console.log("depois do buffer")
                  if (_err) return console.log(_err)
