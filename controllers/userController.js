@@ -27,12 +27,13 @@ exports.updateUser = async (req, res) => {
     }
 }
 
-exports.getUserAddressWithName = async (id) => {
+exports.getUserContactInfo = async (id) => {
     try {
         const userId = id.id ? id.id : id;
         const data = knex("address")
             .join("user", "address.user_id", "user.id")
-            .select("user.name", "address.complement", "address.city", "address.postalCode", "address.province", "address.street")
+            .select("user.name", "user.email", "address.complement", "address.city",
+                "address.postalCode", "address.province", "address.street")
             .where("user.id", userId)
         .first()
         return data

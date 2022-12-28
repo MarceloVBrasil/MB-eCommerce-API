@@ -16,13 +16,13 @@ exports.paymentSuccessful = async (req, res) => {
         await closeCart(cartId)
         await createNewPaymentOrder(cartId)
         const orderId = await getOrderId(cartId)
-        const userName = await getUserName(userId)
 
-        const recipient = await userController.getUserAddressWithName(userId)
+        const client = await userController.getUserContactInfo(userId)
         const order = { orderId, date: getTodaysDate(), products }
         if (Array.isArray(products)) {
-            await sendReceipt(email, products, orderId, getTodaysDate(), getTodaysDate(), userName)
-            generateSalesReceipt(recipient, order)
+            //await sendReceipt(email, products, orderId, getTodaysDate(), getTodaysDate(), userName)
+            generateSalesReceipt(client, order)
+            generateSalesReceipt(client, order)
        }
 
         res.send("payment made successfully!")
@@ -114,21 +114,6 @@ async function getOrderId(cartId) {
             .where("cart_id", cartId.id)
             .first()
         return data.id
-    } catch (error) {
-        return error
-    }
-}
-
-async function getUserName(id) {
-    const userId = id.id ? id.id : id
-    if (isNaN(userId) || userId <= 0) return res.status(400).send("Invalid user id")
-    try {
-        const data = await knex
-            .select("name")
-            .from("user")
-            .where("id", userId)
-            .first()
-        return data.name
     } catch (error) {
         return error
     }
