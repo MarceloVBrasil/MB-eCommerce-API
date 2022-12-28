@@ -29,7 +29,7 @@ function generateSalesReceipt(client, order) {
     },
          (_err, html) => {
              pdf.create(html, {}).toFile("./public/pdf/salesReceipt.pdf", (_err, _res) => {
-                 if(_err) console.log(_err)
+                 if(_err) return console.log(_err)
                  console.log(_res)
             //  sendPDF("marcelovitalbrasil92@gmail.com", "MB e-Commerce: Sales Receipt",
             //      "<h1>You have 1 order!</h1>",
@@ -65,7 +65,7 @@ function generatePurchaseReceipt(client, order) {
     },
          (_err, html) => {
              pdf.create(html, {}).toFile(`./public/pdf/purchaseReceipt-${order.orderId}.pdf`, (_err, _res) => {
-                 if(_err) console.log(_err)
+                 if(_err) return console.log(_err)
                  console.log(_res)
             //  sendPDF(client.email, "MB e-Commerce Receipt",
             //      `<h1>Thanks for purchasing</h1> <p>Dear ${client.name}, please find attached your invoice</p>`,
