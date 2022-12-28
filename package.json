@@ -8,7 +8,7 @@
     "rollback": "knex migrate:rollback",
     "seed": "knex seed:run",
     "start": "nodemon index.js",
-    "sass": "node-sass public/css/scss -o public/css",
+    "sass": "node-sass public/styles/scss -o public/styles",
     "sass-watch": "npm run sass && npm run sass -- -w"
   },
   "keywords": [],
