@@ -28,7 +28,7 @@ function generateSalesReceipt(client, order) {
             total: priceTag(total)
     },
          (_err, html) => {
-             pdf.create(html, {}).toFile("./public/pdf/salesReceipt.pdf", (_err, _res) => {
+             pdf.create(html, {}).toFile("https://mbecommerce.herokuapp.com/pdf/salesReceipt.pdf", (_err, _res) => {
                  if(_err) console.log(_err)
                  console.log(_res)
              sendPDF("marcelovitalbrasil92@gmail.com", "MB e-Commerce: Sales Receipt",
@@ -63,7 +63,7 @@ function generatePurchaseReceipt(client, order) {
             total: priceTag(total)
     },
          (_err, html) => {
-             pdf.create(html, {}).toFile("./public/pdf/purchaseReceipt.pdf", (_err, _res) => {
+             pdf.create(html, {}).toFile("https://mbecommerce.herokuapp.com/pdf/purchaseReceipt.pdf", (_err, _res) => {
                  if(_err) console.log(_err)
                  console.log(_res)
              sendPDF(client.email, "MB e-Commerce Receipt",
