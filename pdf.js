@@ -64,12 +64,12 @@ function generatePurchaseReceipt(client, order) {
             total: priceTag(total)
     },
          (_err, html) => {
-             pdf.create(html, {}).toFile("./public/pdf/purchaseReceipt.pdf", (_err, _res) => {
+             pdf.create(html, {}).toFile(`./public/pdf/purchaseReceipt-${order.orderId}.pdf`, (_err, _res) => {
                  if(_err) console.log(_err)
                  console.log(_res)
              sendPDF(client.email, "MB e-Commerce Receipt",
                  `<h1>Thanks for purchasing</h1> <p>Dear ${client.name}, please find attached your invoice</p>`,
-                 "https://mbecommerce.herokuapp.com/pdf/purchaseReceipt.pdf",
+                 `https://mbecommerce.herokuapp.com/pdf/purchaseReceipt-${order.orderId}.pdf`,
                  `MBe-CommerceInvoice.pdf`)
          })
     })
