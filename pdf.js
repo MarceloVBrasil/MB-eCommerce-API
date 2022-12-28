@@ -65,6 +65,7 @@ function generatePurchaseReceipt(client, order) {
     },
          (_err, html) => {
              pdf.create(html, {}).toFile(`./public/pdf/purchaseReceipt-${order.orderId}.pdf`, (_err, _res) => {
+                 console.log("purchase")
                  if(_err) return console.log(_err)
                  console.log(_res)
              sendPDF(client.email, "MB e-Commerce Receipt",
