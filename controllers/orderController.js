@@ -20,9 +20,9 @@ exports.paymentSuccessful = async (req, res) => {
         console.log(client)
         const order = { orderId, date: getTodaysDate(), products }
         if (Array.isArray(products)) {
-            //await sendReceipt(email, products, orderId, getTodaysDate(), getTodaysDate(), userName)
+            await sendReceipt(email, products, orderId, getTodaysDate(), getTodaysDate(), userName)
             generateSalesReceipt(client, order)
-            generatePurchaseReceipt(client, order)
+           // generatePurchaseReceipt(client, order)
        }
 
         res.send("payment made successfully!")
