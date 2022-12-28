@@ -1,7 +1,6 @@
 const knex = require("knex")(require("../knexfile"));
 const stripe = require("stripe")("sk_test_51M3lWoBv6xxhS7gsfIUIgtVQf5to2Z1YHLbLH7RtoRnJgikAtapiqBwofni4UrZVF3XSDNqgvGfwgEnG0cbWReZu0002X32Wi8")
-const { sendReceipt } = require("../mailer");
-const { generateSalesReceipt } = require("../pdf")
+const { generateSalesReceipt, generatePurchaseReceipt } = require("../pdf")
 const userController = require("./userController")
 
 
@@ -22,7 +21,7 @@ exports.paymentSuccessful = async (req, res) => {
         if (Array.isArray(products)) {
             //await sendReceipt(email, products, orderId, getTodaysDate(), getTodaysDate(), userName)
             generateSalesReceipt(client, order)
-            generateSalesReceipt(client, order)
+            generatePurchaseReceipt(client, order)
        }
 
         res.send("payment made successfully!")
