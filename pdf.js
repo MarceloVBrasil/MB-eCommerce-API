@@ -31,7 +31,7 @@ function generateSalesReceipt(client, order) {
          (_err, html) => {
              console.log("antes do pdf")
              console.log(_err)
-             pdf.create(html, {}).toFile(`./public/pdf/salesReceipt-${order.orderId}.pdf`, (_err, _res) => {
+             pdf.create(html, {}).toFile(`/salesReceipt-${order.orderId}.pdf`, (_err, _res) => {
                  console.log("depois do pdf")
                  if (_err) return console.log(_err)
                  console.log(_res)
