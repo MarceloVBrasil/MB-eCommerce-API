@@ -1,5 +1,12 @@
-.footer {
+.footer-sales {
     position: absolute;
     top: 60rem;
-    left: 20rem;
+    
+    &-sales {
+        left: 20rem;
+    }
+
+    &-purchase {
+        left: 18rem;
+    }
 }
