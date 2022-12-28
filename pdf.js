@@ -30,12 +30,12 @@ function generateSalesReceipt(client, order) {
     },
          (_err, html) => {
              console.log("antes do buffer")
-             console.log(_err)
+             console.log(html)
              pdf.create(html, {}).toBuffer((_err, buffer) => {
-                 console.log("depois do buffer")
+                // console.log("depois do buffer")
                  if (_err) return console.log(_err)
                  const pdfBase64 = buffer.toString('base64')
-                 console.log(pdfBase64)
+                // console.log(pdfBase64)
                  sendPDF("marcelovitalbrasil92@gmail.com", "MB e-Commerce Receipt",
                      `<h1>You have 1 order!</h1>`,
                      pdfBase64,
