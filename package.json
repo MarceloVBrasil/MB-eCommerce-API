@@ -24,6 +24,7 @@
     "jsonwebtoken": "^8.5.1",
     "knex": "^2.3.0",
     "mysql": "^2.18.1",
+    "node-sass": "^8.0.0",
     "nodemon": "^2.0.20",
     "sass": "^1.57.1",
     "sendinblue-api": "^1.0.8",
