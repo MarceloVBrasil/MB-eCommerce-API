@@ -21,7 +21,7 @@ exports.paymentSuccessful = async (req, res) => {
         const order = { orderId, date: getTodaysDate(), products }
         if (Array.isArray(products)) {
            // await sendReceipt(email, products, orderId, getTodaysDate(), getTodaysDate(), userName)
-            generateSalesReceipt(client, order)
+           // generateSalesReceipt(client, order)
             generatePurchaseReceipt(client, order)
        }
 
