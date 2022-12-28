@@ -1,0 +1,25 @@
+.header {
+  padding: 0 2rem;
+  height: 17rem;
+  border-bottom: 2px solid black;
+  margin: 0 2rem; }
+  .header__logo {
+    width: 10.0rem;
+    position: absolute;
+    top: 3.5rem;
+    left: 2rem; }
+  .header-client-info {
+    position: absolute;
+    top: 3.5rem;
+    right: 2rem; }
+    .header-client-info__title {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      font-size: 2rem; }
+    .header-client-info__name, .header-client-info__address {
+      margin-bottom: 0.2rem;
+      font-family: 'Roboto', sans-serif;
+      text-transform: capitalize; }
+    .header-client-info__name {
+      font-size: 1.2rem; }
