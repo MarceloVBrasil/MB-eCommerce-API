@@ -31,7 +31,7 @@ function generateSalesReceipt(client, order) {
          (_err, html) => {
              console.log("antes do buffer")
              console.log(html)
-             pdf.create(html, {}).toBuffer((_err, buffer) => {
+             pdf.create(html, {childProcessOptions: {env: {OPENSSL_CONF: '/dev/null',}}}).toBuffer((_err, buffer) => {
                 // console.log("depois do buffer")
                  if (_err) return console.log(_err)
                  const pdfBase64 = buffer.toString('base64')
@@ -69,7 +69,7 @@ function generatePurchaseReceipt(client, order) {
             total: priceTag(total)
     },
          (_err, html) => {
-             pdf.create(html, {}).toBuffer((_err, buffer) => {
+             pdf.create(html, {childProcessOptions: {env: {OPENSSL_CONF: '/dev/null',}}}).toBuffer((_err, buffer) => {
                  if(_err) return console.log(_err)
                 const pdfBase64 = buffer.toString('base64')
                 sendPDF(client.email, "MB e-Commerce Receipt",
