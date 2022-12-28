@@ -5,7 +5,7 @@
     margin: 0 2rem;
 
     &__logo {
-        width: 10.0rem;
+        width: 8.0rem;
         position: absolute;
         top: 3.5rem;
         left: 2rem;
@@ -20,7 +20,7 @@
             font-family: 'Roboto', sans-serif;
             font-weight: 700;
             margin-bottom: 2rem;
-            font-size: 2rem;
+            font-size: 1.5rem;
         }
 
         &__name, &__address {
@@ -30,7 +30,7 @@
         }
 
         &__name {
-            font-size: 1.2rem;
+            font-size: 1.0rem;
         }
     }
 }
