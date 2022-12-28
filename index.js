@@ -18,6 +18,7 @@ app.use(cors());
 
 app.use("/images", express.static("./public/images"));
 app.use("/pdf", express.static("./public/pdf"));
+app.use("/styles", express.static("./public/styles"));
 
 app.use("/products", productsRoutes);
 app.use("/register", registerRoutes);
