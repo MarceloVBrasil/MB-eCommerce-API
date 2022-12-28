@@ -32,7 +32,7 @@ function generateSalesReceipt(client, order) {
              console.log("antes do pdf")
             if(_err) console.log(_err)
              pdf.create(html, {}).toBuffer((_err, buffer) => {
-                 console.log("depois do pdf")
+                 console.log("depois do buffer")
                  if (_err) return console.log(_err)
                  const pdfBase64 = buffer.toString('base64')
                  console.log(pdfBase64)
