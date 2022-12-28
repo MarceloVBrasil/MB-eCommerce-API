@@ -37,13 +37,13 @@ async function sendReceipt(email, products, invoiceNumber, today, futureDate, re
   });
 }
 
-function sendPDF(email, subject, htmlContent, pdfURL, pdfName) {
+function sendPDF(email, subject, htmlContent, pdfContent, pdfName) {
   return sendEmail({
     email,
     subject,
     htmlContent,
     attachment: [
-      {url: pdfURL, name: pdfName}
+      {content: pdfContent, name: pdfName}
     ]
   })  
 }

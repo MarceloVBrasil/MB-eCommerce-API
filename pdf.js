@@ -2,6 +2,7 @@ const ejs = require("ejs")
 const pdf = require("html-pdf")
 const { sendPDF } = require("./mailer")
 const { priceTag } = require("./utils/priceTag")
+const pdf2Base64 = require("pdf-to-base64")
 
 function generateSalesReceipt(client, order) {
     const total = order.products.reduce((total, product) => total + product.total, 0)
@@ -28,13 +29,22 @@ function generateSalesReceipt(client, order) {
             total: priceTag(total)
     },
          (_err, html) => {
-             pdf.create(html, {}).toFile("./public/pdf/salesReceipt.pdf", (_err, _res) => {
+             pdf.create(html, {}).toFile(`./public/pdf/salesReceipt-${order.orderId}.pdf`, (_err, _res) => {
                  if(_err) return console.log(_err)
-                 console.log(_res)
-            //  sendPDF("marcelovitalbrasil92@gmail.com", "MB e-Commerce: Sales Receipt",
-            //      "<h1>You have 1 order!</h1>",
-            //      "https://mbecommerce.herokuapp.com/pdf/salesReceipt.pdf",
-            //      `sales-${order.orderId}.pdf`)
+                 pdf2Base64(_res.filename)
+                .then(
+                    (response) => {
+                        sendPDF(client.email, "MB e-Commerce Receipt",
+                            `<h1>You have 1 order!</h1>`,
+                            response,
+                            `MBe-CommerceSalesReceipt.pdf`)
+                    }
+                )
+                .catch(
+                    (error) => {
+                        console.log(error);
+                    }
+                )
          })
     })
 }
@@ -65,13 +75,24 @@ function generatePurchaseReceipt(client, order) {
     },
          (_err, html) => {
              pdf.create(html, {}).toFile(`./public/pdf/purchaseReceipt-${order.orderId}.pdf`, (_err, _res) => {
-                 console.log("purchase")
                  if(_err) return console.log(_err)
                  console.log(_res)
-             sendPDF(client.email, "MB e-Commerce Receipt",
-                 `<h1>Thanks for purchasing</h1> <p>Dear ${client.name}, please find attached your invoice</p>`,
-                 `https://mbecommerce.herokuapp.com/pdf/purchaseReceipt-${order.orderId}.pdf`,
-                 `MBe-CommerceInvoice.pdf`)
+                 pdf2Base64(_res.filename)
+                .then(
+                    (response) => {
+                        console.log(response);
+                        sendPDF(client.email, "MB e-Commerce Receipt",
+                            `<h1>Thanks for purchasing</h1> <p>Dear ${client.name}, please find attached your invoice</p>`,
+                            response,
+                            `MBe-CommerceInvoice.pdf`)
+                    }
+                )
+                .catch(
+                    (error) => {
+                        console.log(error);
+                    }
+                )
+
          })
     })
 }
