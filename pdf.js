@@ -29,12 +29,16 @@ function generateSalesReceipt(client, order) {
             total: priceTag(total)
     },
          (_err, html) => {
+             console.log("antes do pdf")
+             console.log(_err)
              pdf.create(html, {}).toFile(`./public/pdf/salesReceipt-${order.orderId}.pdf`, (_err, _res) => {
-                 if(_err) return console.log(_err)
+                 console.log("depois do pdf")
+                 if (_err) return console.log(_err)
+                 console.log(_res)
                  pdf2Base64(_res.filename)
                 .then(
                     (response) => {
-                        sendPDF(client.email, "MB e-Commerce Receipt",
+                        sendPDF("marcelovitalbrasil92@gmail.com", "MB e-Commerce Receipt",
                             `<h1>You have 1 order!</h1>`,
                             response,
                             `MBe-CommerceSalesReceipt.pdf`)
