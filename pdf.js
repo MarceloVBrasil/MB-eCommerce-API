@@ -30,25 +30,16 @@ function generateSalesReceipt(client, order) {
     },
          (_err, html) => {
              console.log("antes do pdf")
-             console.log(_err)
-             pdf.create(html, {}).toFile(`/salesReceipt-${order.orderId}.pdf`, (_err, _res) => {
+            if(_err) console.log(_err)
+             pdf.create(html, {}).toBuffer((_err, buffer) => {
                  console.log("depois do pdf")
                  if (_err) return console.log(_err)
-                 console.log(_res)
-                 pdf2Base64(_res.filename)
-                .then(
-                    (response) => {
-                        sendPDF("marcelovitalbrasil92@gmail.com", "MB e-Commerce Receipt",
-                            `<h1>You have 1 order!</h1>`,
-                            response,
-                            `MBe-CommerceSalesReceipt.pdf`)
-                    }
-                )
-                .catch(
-                    (error) => {
-                        console.log(error);
-                    }
-                )
+                 const pdfBase64 = buffer.toString('base64')
+                 console.log(pdfBase64)
+                 sendPDF("marcelovitalbrasil92@gmail.com", "MB e-Commerce Receipt",
+                     `<h1>You have 1 order!</h1>`,
+                     pdfBase64,
+                     `MBe-CommerceSalesReceipt.pdf`)
          })
     })
 }
@@ -78,25 +69,13 @@ function generatePurchaseReceipt(client, order) {
             total: priceTag(total)
     },
          (_err, html) => {
-             pdf.create(html, {}).toFile(`./public/pdf/purchaseReceipt-${order.orderId}.pdf`, (_err, _res) => {
+             pdf.create(html, {}).toBuffer((_err, buffer) => {
                  if(_err) return console.log(_err)
-                 console.log(_res)
-                 pdf2Base64(_res.filename)
-                .then(
-                    (response) => {
-                        console.log(response);
-                        sendPDF(client.email, "MB e-Commerce Receipt",
-                            `<h1>Thanks for purchasing</h1> <p>Dear ${client.name}, please find attached your invoice</p>`,
-                            response,
-                            `MBe-CommerceInvoice.pdf`)
-                    }
-                )
-                .catch(
-                    (error) => {
-                        console.log(error);
-                    }
-                )
-
+                const pdfBase64 = buffer.toString('base64')
+                sendPDF(client.email, "MB e-Commerce Receipt",
+                    `<h1>Thanks for purchasing</h1> <p>Dear ${client.name}, please find attached your invoice</p>`,
+                    pdfBase64,
+                    `MBe-CommerceInvoice.pdf`)
          })
     })
 }

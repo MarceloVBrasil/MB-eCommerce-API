@@ -18,7 +18,6 @@ exports.paymentSuccessful = async (req, res) => {
         const orderId = await getOrderId(cartId)
 
         const client = await userController.getUserContactInfo(userId)
-        console.log(client)
         const order = { orderId, date: getTodaysDate(), products }
         if (Array.isArray(products)) {
            // await sendReceipt(email, products, orderId, getTodaysDate(), getTodaysDate(), client.name)
