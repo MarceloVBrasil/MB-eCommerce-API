@@ -1,5 +1,7 @@
 const knex = require("knex")(require("../knexfile"));
 const stripe = require("stripe")("sk_test_51M3lWoBv6xxhS7gsfIUIgtVQf5to2Z1YHLbLH7RtoRnJgikAtapiqBwofni4UrZVF3XSDNqgvGfwgEnG0cbWReZu0002X32Wi8")
+const cartController = require("./cartController")
+const userController = require("./userController")
 
 exports.puItemOnHold = async (req, res) => {
     try {
@@ -154,7 +156,7 @@ exports.processPayment = async (req, res) => {
             quantity: 1, // 1 cart,
         },
     ],
-    customer_email: await getUserEmail(userId),
+    customer_email: await userController.getUserEmail(userId),
     mode: 'payment',
     success_url: `${originURL}?sessionId={CHECKOUT_SESSION_ID}`,
     cancel_url: `${originURL}`,
@@ -163,15 +165,21 @@ exports.processPayment = async (req, res) => {
   res.json({url: session.url, id: session.id})
 }
 
-async function getUserEmail(id) {
-    if(isNaN(id) || id <= 0) return res.status(400).send("Invalid id")
+exports.getProductsWithQuantity = async (userId) => {
+    if (isNaN(userId) || userId <= 0) return res.status(400).send("Invalid user id")
+    const cartId = await cartController.getCartId(userId)
     try {
-        const data = await knex
-            .select("email")
-            .from("user")
-            .where("id", id)
-            .first()
-        return data.email
+        const data = await knex("purchase")
+            .join("cart", "cart_id", "cart.id")
+            .join("product", "product_id", "product.id")
+            .select("product.name", "purchase.quantity", "product.price")
+            .where("cart_id", cartId.id)
+            .andWhere("cart.status", "open")
+            .andWhere("purchase.quantity", ">", "0")
+        const dataWithTotalPerProduct = data.map(d => {
+            return {...d, total: d.price * d.quantity}
+        })
+        return dataWithTotalPerProduct  
     } catch (error) {
        return error
     }

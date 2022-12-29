@@ -26,7 +26,7 @@
 
     &-header {
         position: absolute;
-        top: 10rem;
+        top: 11rem;
         width: calc(100% - 4rem);
         padding-bottom: 1rem;
         border-bottom: 2px solid black;
@@ -39,6 +39,8 @@
 
             &--text {
                 width: 50%;
+                position: relative;
+                left: 0.5rem;
             }
 
             &--number {
@@ -68,6 +70,8 @@
 
             &--text {
             width: 50%;
+            position: relative;
+            left: 0.5rem;
             }
 
             &--number {
