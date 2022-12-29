@@ -27,7 +27,9 @@
       text-transform: uppercase;
       width: auto; }
       .receipt-products-header__title--text {
-        width: 50%; }
+        width: 50%;
+        position: relative;
+        left: 0.5rem; }
       .receipt-products-header__title--number {
         width: 16%; }
   .receipt-products-container {
@@ -46,7 +48,9 @@
       width: auto;
       display: inline-block; }
       .receipt-products-info__info--text {
-        width: 50%; }
+        width: 50%;
+        position: relative;
+        left: 0.5rem; }
       .receipt-products-info__info--number {
         width: 16%; }
         .receipt-products-info__info--number-quantity {
