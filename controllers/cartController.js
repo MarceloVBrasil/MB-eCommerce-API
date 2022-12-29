@@ -41,3 +41,32 @@ exports.getProductsInCart = async (req, res) => {
         res.status(503).send("Error getting products in cart")
     }
 }
+
+exports.closeCart = async (cartId) => {
+    const id = cartId.id ? cartId.id : cartId
+    if (isNaN(id) || id <= 0) return res.status(400).send("Invalid cart id")
+    try {
+        const data = await knex('cart')
+            .where({ id: id })
+            .update({ status: "closed" })
+        return data
+    } catch (error) {
+        return error
+    }
+}
+
+exports.getCartId = async (userId) => {
+    const id = userId.id ? userId.id : userId
+    if (isNaN(id) || id <= 0) return res.status(400).send("Invalid user id")
+    try {
+        const data = await knex
+            .select("id")
+            .from("cart")
+            .where("user_id", id)
+            .andWhere("status", "open")
+            .first()
+        return data
+    } catch (error) {
+        return error
+    }
+}

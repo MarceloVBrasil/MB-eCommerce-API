@@ -2,18 +2,12 @@ const ejs = require("ejs")
 const pdf = require("html-pdf")
 const { sendPDF } = require("./mailer")
 const { priceTag } = require("./utils/priceTag")
-const pdf2Base64 = require("pdf-to-base64")
+const { calculateTotal } = require("./utils/calculateTotalAmount")
+const { formatProductsData } = require("./utils/formatProductsData")
 
 function generateSalesReceipt(client, order) {
-    const total = order.products.reduce((total, product) => total + product.total, 0)
-    const products = order.products.map(product => {
-        return {
-            name: product.name,
-            price: priceTag(product.price),
-            quantity: product.quantity,
-            total: priceTag(product.total)
-        }
-    })
+    const total = calculateTotal(order.products)
+    const products = formatProductsData(order.products)
 
      ejs.renderFile("./templates/salesReceipt.ejs",
          {
@@ -29,13 +23,9 @@ function generateSalesReceipt(client, order) {
             total: priceTag(total)
     },
          (_err, html) => {
-             console.log("antes do buffer")
-             console.log(html)
              pdf.create(html, {childProcessOptions: {env: {OPENSSL_CONF: '/dev/null',}}}).toBuffer((_err, buffer) => {
-                // console.log("depois do buffer")
-                 if (_err) return console.log(_err)
                  const pdfBase64 = buffer.toString('base64')
-                // console.log(pdfBase64)
+
                  sendPDF("marcelovitalbrasil92@gmail.com", "MB e-Commerce Receipt",
                      `<h1>You have 1 order!</h1>`,
                      pdfBase64,
@@ -45,15 +35,8 @@ function generateSalesReceipt(client, order) {
 }
 
 function generatePurchaseReceipt(client, order) {
-    const total = order.products.reduce((total, product) => total + product.total, 0)
-    const products = order.products.map(product => {
-        return {
-            name: product.name,
-            price: priceTag(product.price),
-            quantity: product.quantity,
-            total: priceTag(product.total)
-        }
-    })
+    const total = calculateTotal(order.products)
+    const products = formatProductsData(order.products)
 
      ejs.renderFile("./templates/purchaseReceipt.ejs",
          {
@@ -70,7 +53,6 @@ function generatePurchaseReceipt(client, order) {
     },
          (_err, html) => {
              pdf.create(html, {childProcessOptions: {env: {OPENSSL_CONF: '/dev/null',}}}).toBuffer((_err, buffer) => {
-                 if(_err) return console.log(_err)
                 const pdfBase64 = buffer.toString('base64')
                 sendPDF(client.email, "MB e-Commerce Receipt",
                     `<h1>Thanks for purchasing</h1> <p>Dear ${client.name}, please find attached your invoice</p>`,

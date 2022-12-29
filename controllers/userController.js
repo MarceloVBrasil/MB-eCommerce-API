@@ -42,6 +42,19 @@ exports.getUserContactInfo = async (id) => {
     }
 }
 
+exports.getUserId = async (email) => {
+    try {
+        const data = await knex
+            .select("id")
+            .from("user")
+            .where("email", email)
+            .first()
+        return data
+    } catch (error) {
+        return error
+    }
+}
+
 async function checkIfEmailExists(email) {
     const data = await knex
     .select("email")
@@ -51,7 +64,7 @@ async function checkIfEmailExists(email) {
     return data
 }
 
-async function getUserEmail(id) {
+exports.getUserEmail = async (id) =>  {
     const data = await knex
         .select("email")
         .from("user")
