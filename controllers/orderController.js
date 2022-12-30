@@ -70,6 +70,8 @@ exports.getOrdersByUserId = async (req, res) => {
             .select('product.price', 'purchase.quantity', 'order.id', 'order.order_date', 'order.order_sent')
             .where("cart.status", "closed")
             .andWhere("cart.user_id", userId)
+            .orderBy("order.order_date", "desc")
+        
         const dataWIthTotalPerProduct = data.map(d => {
             return { total: d.price * d.quantity, orderId: d.id, orderDate: d.order_date, orderSent: d.order_sent !== null }
         })
