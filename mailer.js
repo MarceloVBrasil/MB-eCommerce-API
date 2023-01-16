@@ -37,6 +37,14 @@ async function sendReceipt(email, products, invoiceNumber, today, futureDate, re
   });
 }
 
+function sendOrderEmail(orderId, recipient, email) {
+  return sendEmail({
+    email,
+    subject: `MB e-Commerce order on its way!`,
+    htmlContent: `<h1>Out for Delivery!</h1> <p>Dear ${recipient}, your order ${orderId} is on its way!</p>`
+  })
+}
+
 function sendPDF(email, subject, htmlContent, pdfContent, pdfName) {
   return sendEmail({
     email,
@@ -48,4 +56,4 @@ function sendPDF(email, subject, htmlContent, pdfContent, pdfName) {
   })  
 }
 
-module.exports = {sendReceipt, sendPDF}
+module.exports = {sendReceipt, sendPDF, sendOrderEmail}

@@ -2,6 +2,7 @@ const knex = require("knex")(require("../knexfile"));
 const stripe = require("stripe")("sk_test_51M3lWoBv6xxhS7gsfIUIgtVQf5to2Z1YHLbLH7RtoRnJgikAtapiqBwofni4UrZVF3XSDNqgvGfwgEnG0cbWReZu0002X32Wi8")
 const { generateSalesReceipt, generatePurchaseReceipt } = require("../pdf")
 const { getTodaysDate } = require("../utils/getTodaysDate")
+const { sendOrderEmail } = require("../mailer")
 
 const userController = require("./userController")
 const cartController = require("./cartController")
@@ -79,6 +80,63 @@ exports.getOrdersByUserId = async (req, res) => {
         res.json(dataWithTotalPerOrder)
     } catch (error) {
         res.status(503).send("Error getting user orders")
+    }
+}
+
+exports.getQuantityOfUndeliveredOrders = async(req, res) => {
+    try {
+        const { admin } = req.params
+        if (admin === '1') {
+            const data = await knex.count('id as undeliveredOrders').from('order').whereNull("order_sent").first()
+        res.json(data.undeliveredOrders)
+        } else {
+            res.status(403).send("You do not have access to this method")
+        }
+        
+    } catch (error) {
+        res.status(503).send("Error getting total quantity of orders")
+    }
+}
+
+exports.getAllOrders = async (req, res) => {
+    try {
+        const { admin } = req.params
+        if (admin === '1') {
+                    const data = await knex('purchase')
+            .join('cart', 'cart_id', 'cart.id')
+            .join('product', 'product_id', 'product.id')
+            .join('order', 'cart.id', 'order.cart_id')
+            .select('product.price', 'purchase.quantity', 'order.id', 'order.order_date', 'order.order_sent')
+            .where("cart.status", "closed")
+            .orderBy("order.order_date", "desc")
+        
+            const dataWIthTotalPerProduct = data.map(d => {
+                return { total: d.price * d.quantity, orderId: d.id, orderDate: d.order_date, orderSent: d.order_sent !== null }
+            })
+            const dataWithTotalPerOrder = groupArrayOfObjectsById(dataWIthTotalPerProduct)
+            res.json(dataWithTotalPerOrder)
+        } else {
+            res.status(403).send("You do not have access to this method")
+        }
+
+    } catch (error) {
+        res.status(503).send("Error getting user orders")
+    }
+}
+
+exports.sendOrder = async (req, res) => {
+    try {
+        const { orderId, userId } = req.body
+        const user = await userController.getUserContactInfo(userId)
+        const data = await knex("order")
+            .where("id", orderId)
+            .update({ order_sent: Date.now() })
+        sendOrderEmail(orderId, user.name, user.email)
+        res.json(data)
+        
+    } catch (error) {
+        console.log(error)
+        res.status(503).send("Error sending products")
     }
 }
 

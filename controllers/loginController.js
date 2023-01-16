@@ -10,7 +10,7 @@ exports.login = async (req, res) => {
 
     const user = await knex("user")
       .join("address", "user.id", "address.user_id")
-      .select("user.id", "user.password", "user.email", "user.name", "address.city", "address.province",
+      .select("user.id", "user.password", "user.email", "user.name", "user.admin" ,"address.city", "address.province",
         "address.street", "address.complement", "address.postalCode")
       .where("user.email", email)
       .first()
@@ -22,6 +22,7 @@ exports.login = async (req, res) => {
         {expiresIn: "24h"})
         
         delete user.password
+        console.log(user)
         return res.status(200).json({...user, token})
       }
       res.status(401).send("Wrong credentials")
