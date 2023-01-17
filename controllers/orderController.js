@@ -126,8 +126,8 @@ exports.getAllOrders = async (req, res) => {
 
 exports.sendOrder = async (req, res) => {
     try {
-        const { orderId, userId } = req.body
-        const user = await userController.getUserContactInfo(userId)
+        const { orderId } = req.body
+        const user = await getUserByOrderId(orderId)
         const data = await knex("order")
             .where("id", orderId)
             .update({ order_sent: Date.now() })
@@ -156,4 +156,14 @@ function groupArrayOfObjectsById(array) {
             };
         }
     }).filter(element => element !== undefined);
+}
+
+async function getUserByOrderId(id) {
+    const user = await knex("order")
+        .join("cart", "cart_id", "cart.id")
+        .join("user", "cart.user_id", "user.id")
+        .select("user.name", "user.email")
+        .where("order.id", id)
+        .first()
+    return user
 }
