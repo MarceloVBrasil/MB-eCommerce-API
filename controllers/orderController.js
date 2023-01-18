@@ -3,6 +3,7 @@ const stripe = require("stripe")("sk_test_51M3lWoBv6xxhS7gsfIUIgtVQf5to2Z1YHLbLH
 const { generateSalesReceipt, generatePurchaseReceipt } = require("../pdf")
 const { getTodaysDate } = require("../utils/getTodaysDate")
 const { sendOrderEmail } = require("../mailer")
+const { v4: uuidV4 } = require("uuid")
 
 const userController = require("./userController")
 const cartController = require("./cartController")
@@ -13,8 +14,7 @@ exports.paymentSuccessful = async (req, res) => {
         const { customer_details: { email }, } = await stripe.checkout.sessions.retrieve(req.query.sessionId);
         const userId = await userController.getUserId(email)
         if (!userId) return res.status(400).send("Email Invalid")
-        if (userId.id !== parseInt(req.query.userId)) return res.status(400).send("Email invalid")
-        
+        if (!userId.id) return res.status(400).send("Email invalid")
         const products = await purchaseController.getProductsWithQuantity(userId.id)
         const cartId = await cartController.getCartId(userId)
         await cartController.closeCart(cartId)
@@ -36,10 +36,11 @@ exports.paymentSuccessful = async (req, res) => {
 }
 
 async function createNewPaymentOrder(cartId) {
-    if (isNaN(cartId.id) || cartId.id <= 0) return res.status(400).send("Invalid cart id")
+    if (!cartId) return res.status(400).send("Invalid cart id")
     try {
+        const orderId = uuidV4()
         await knex('order')
-            .insert({ order_date: Date.now(), cart_id: cartId.id })
+            .insert({ id: orderId, order_date: Date.now(), cart_id: cartId.id })
         
     } catch (error) {
         return error
@@ -47,7 +48,7 @@ async function createNewPaymentOrder(cartId) {
 }
 
 async function getOrderId(cartId) {
-    if (isNaN(cartId.id) || cartId.id <= 0) return res.status(400).send("Invalid cart id")
+    if (!cartId) return res.status(400).send("Invalid cart id")
     try {
         const data = await knex
             .select("id")

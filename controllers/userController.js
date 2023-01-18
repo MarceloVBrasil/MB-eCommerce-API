@@ -2,6 +2,15 @@ const knex = require("knex")(require("../knexfile"));
 const bcrypt = require("bcryptjs");
 const { validateEmail, validatePostalCode } = require("../validate");
 
+exports.getUserEmail = async (id) =>  {
+    const data = await knex
+        .select("email")
+        .from("user")
+        .where("id", id)
+        .first()
+    return data.email
+}
+
 exports.updateUser = async (req, res) => {
     try {
         const { name, password, email, street, city, province, complement, postalCode } = req.body
@@ -64,7 +73,7 @@ async function checkIfEmailExists(email) {
     return data
 }
 
-exports.getUserEmail = async (id) =>  {
+async function getUserEmail(id) {
     const data = await knex
         .select("email")
         .from("user")

@@ -1,10 +1,12 @@
 const knex = require("knex")(require("../knexfile"));
+const { v4: uuidV4 } = require("uuid")
 
 exports.createNewCart = async (req, res) => {
     try {
         const userId = req.body.userId
-        const data = await knex('cart').insert({ user_id: userId })
-        res.status(201).json(data[0])
+        const cartId = uuidV4()
+        await knex('cart').insert({ id: cartId, user_id: userId })
+        res.status(201).json(cartId)
     } catch (error) {
         res.status(503).send("Error creating new Cart")
     }
@@ -13,7 +15,7 @@ exports.createNewCart = async (req, res) => {
 exports.checkIfCartIsOpen = async (req, res) => {
     try {
         const userId = req.params.userId
-        if(isNaN(userId) || userId <= 0) return res.status(400).send("Invalid user id")
+        if(!userId) return res.status(400).send("Invalid user id")
         const data = await knex
             .select("id")
             .from("cart")
@@ -44,7 +46,7 @@ exports.getProductsInCart = async (req, res) => {
 
 exports.closeCart = async (cartId) => {
     const id = cartId.id ? cartId.id : cartId
-    if (isNaN(id) || id <= 0) return res.status(400).send("Invalid cart id")
+    if (!cartId) return res.status(400).send("Invalid cart id")
     try {
         const data = await knex('cart')
             .where({ id: id })
@@ -57,7 +59,7 @@ exports.closeCart = async (cartId) => {
 
 exports.getCartId = async (userId) => {
     const id = userId.id ? userId.id : userId
-    if (isNaN(id) || id <= 0) return res.status(400).send("Invalid user id")
+    if (!id) return res.status(400).send("Invalid user id")
     try {
         const data = await knex
             .select("id")

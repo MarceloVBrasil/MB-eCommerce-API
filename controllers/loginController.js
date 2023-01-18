@@ -22,7 +22,7 @@ exports.login = async (req, res) => {
         {expiresIn: "24h"})
         
         delete user.password
-        console.log(user)
+
         return res.status(200).json({...user, token})
       }
       res.status(401).send("Wrong credentials")
