@@ -13,7 +13,7 @@ exports.registerNewUser = async (req, res) => {
     const userId = uuidV4()
     const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()
     
-    const newUser = { capitalizedName, password: bcrypt.hashSync(password), email }
+    const newUser = { name: capitalizedName, password: bcrypt.hashSync(password), email }
     newUser.id = userId
 
     await knex("user").insert(newUser)
