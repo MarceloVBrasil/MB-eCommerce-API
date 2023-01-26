@@ -1,4 +1,6 @@
- function validateEmail(email) {
+const { getFileExtension } = require("./getFileExtension");
+
+ function isEmailValid(email) {
   if (!email.includes("@") || !email.includes(".")) return false;
 
   const [username, domainExtension] = email.split("@");
@@ -10,7 +12,8 @@
   return true;
 }
 
- function validatePostalCode(postalCode) {
+function isPostalCodeValid(postalCode) {
+   if(!postalCode) return false
   if (postalCode.length < 6 || postalCode.length > 7) return false;
   if (postalCode.length === 7 && !validSeparateCharacter(postalCode[3]))
     return false;
@@ -43,4 +46,15 @@ function isLetter(c) {
   return c.toLowerCase() !== c.toUpperCase();
 }
 
-module.exports = {validateEmail, validatePostalCode}
+function isProvinceValid(province) {
+  const validProvinces = ["AB", "BC", "MB", "NB", "NL", "NT", "NS", "NU", "ON", "PE", "QC", "SK", "YT"]
+  return validProvinces.includes(province)
+}
+
+function isFileValid(filename) {
+  const acceptedFormats = ["png", "jpg", "jpeg", "webp"]
+  const extension = getFileExtension(filename)
+  return acceptedFormats.includes(extension)
+}
+
+module.exports = { isEmailValid, isPostalCodeValid, isProvinceValid, isFileValid }

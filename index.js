@@ -4,14 +4,14 @@ const express = require("express");
 const app = express();
 const { PORT = 8080, SERVER_URL } = process.env;
 
-const productsRoutes = require("./routes/productsRoute");
-const registerRoutes = require("./routes/registerRoute");
-const loginRoutes = require("./routes/loginRoute");
-const commentsRoutes = require("./routes/commentsRoute");
-const cartsRoutes = require("./routes/cartsRoute");
-const purchaseRoutes = require("./routes/purchaseRoute");
-const ordersRoutes = require('./routes/ordersRoute')
-const usersRoutes = require('./routes/usersRoute')
+const productsRoutes = require("./src/routes/productsRoute");
+const registerRoutes = require("./src/routes/registerRoute");
+const loginRoutes = require("./src/routes/loginRoute");
+const commentsRoutes = require("./src/routes/commentsRoute");
+const cartsRoutes = require("./src/routes/cartsRoute");
+const purchaseRoutes = require("./src/routes/purchaseRoute");
+const ordersRoutes = require('./src/routes/ordersRoute')
+const usersRoutes = require('./src/routes/usersRoute')
 
 app.use(express.json());
 app.use(cors());

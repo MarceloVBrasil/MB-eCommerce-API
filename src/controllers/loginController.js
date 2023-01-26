@@ -1,5 +1,5 @@
 require("dotenv").config()
-const knex = require("knex")(require("../knexfile"));
+const knex = require("knex")(require("../../knexfile"));
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 

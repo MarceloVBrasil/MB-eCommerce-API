@@ -1,9 +1,9 @@
 const ejs = require("ejs")
 const pdf = require("html-pdf")
 const { sendPDF } = require("./mailer")
-const { priceTag } = require("./utils/priceTag")
-const { calculateTotal } = require("./utils/calculateTotalAmount")
-const { formatProductsData } = require("./utils/formatProductsData")
+const { priceTag } = require("./src/utils/priceTag")
+const { calculateTotal } = require("./src/utils/calculateTotalAmount")
+const { formatProductsData } = require("./src/utils/formatProductsData")
 
 function generateSalesReceipt(client, order) {
     const total = calculateTotal(order.products)
