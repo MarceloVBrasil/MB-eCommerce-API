@@ -5,7 +5,7 @@ function formatProductsData(products) {
             name: product.name,
             quantity: product.quantity,
             price: priceTag(product.price),
-            total: priceTag(product.total)
+            totalPerProduct: priceTag(product.price * product.quantity)
         }
     })
 }

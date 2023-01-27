@@ -9,6 +9,8 @@ const userController = require("./userController")
 const cartController = require("./cartController")
 const purchaseController = require("./purchaseController");
 const { UserService } = require("../services/UserService");
+const { OrderSchema } = require("../schemas/OrderSchema");
+const { OrderService } = require("../services/OrderService");
 
 // exports.paymentSuccessful = async (req, res) => {
 //     try {
@@ -189,8 +191,16 @@ class OrderController {
     
     // add(cartId => void) => stay at controller                               - POST
     static async add(req, res) {
-        const { customer_details: { email }, } = await stripe.checkout.sessions.retrieve(req.query.sessionId);
-        const user = await UserService.getByEmail(email)
+        try {
+            const { customer_email: email } = await stripe.checkout.sessions.retrieve(req.query.sessionId);
+            await OrderSchema.add().validate({email})
+            const user = await UserService.getByEmail(email)
+            const result = await OrderService.add(user)
+            res.json(result)
+        } catch (error) {
+            console.log(error)
+            res.status(503).json({message: error})
+        }
     }
 }
 

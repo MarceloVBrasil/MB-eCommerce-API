@@ -6,6 +6,7 @@ class PurchaseRepository {
     }
 
    async getProductsByCartId(cartId) {
+    console.log(this._purchases)
         return this._purchases.filter(purchase => purchase.cartId === cartId)
     }
 
