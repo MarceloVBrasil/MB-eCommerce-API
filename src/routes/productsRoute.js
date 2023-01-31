@@ -14,10 +14,10 @@ const upload = multer({ storage })
 
 router.route("/")
     .get(ProductController.getAll)
-    .post(ProductController.add)
+    .post(upload.single("image"), ProductController.add)
 router.route("/:id")
     .get(ProductController.getById)
-    .put(ProductController.update)
+    .put(upload.single("image"), ProductController.update)
     .delete(ProductController.delete)
 
 module.exports = router;

@@ -18,7 +18,7 @@ class AddressRepository {
 
     async update(userId, address) {
         const addressIndex = this._addresses.findIndex(address => address.user_id === userId)
-        this._addresses[addressIndex] = address
+        this._addresses[addressIndex] = {...address, user_id: userId}
         return address
     }
 

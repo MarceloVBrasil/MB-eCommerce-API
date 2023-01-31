@@ -181,12 +181,33 @@ class OrderController {
     
     // getAll(void => order[]) => stay at controller - must be an admin        - GET
     static async getAll(req, res) {
-        
+        try {
+            const result = await OrderService.getAll()
+            res.json(result)
+        } catch (error) {
+            res.status(503).json({message: error})
+        }
     }
     
     // getByUserId(userId => order) => stay at controller                      - GET
     static async getByUserId(req, res) {
-        
+        try {
+            await OrderSchema.getByUserId().validate(req.params)
+            const result = await OrderService.getByUserId(req.params.userId)
+            res.json(result)
+        } catch (error) {
+            res.status(503).json({message: error.message})
+        }
+    }
+
+    static async getById(req, res) {
+        try {
+            await OrderSchema.getById().validate(req.params)
+            const result = await OrderService.getById(req.params.orderId)
+            res.json(result)
+        } catch (error) {
+            res.status(503).json({message: error.message})
+        }
     }
     
     // add(cartId => void) => stay at controller                               - POST
@@ -198,8 +219,7 @@ class OrderController {
             const result = await OrderService.add(user)
             res.json(result)
         } catch (error) {
-            console.log(error)
-            res.status(503).json({message: error})
+            res.status(503).json({message: error.message})
         }
     }
 }

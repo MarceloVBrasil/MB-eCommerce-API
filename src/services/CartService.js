@@ -29,7 +29,7 @@ class CartService {
         // check if cart is open
         const isCartOpen = await cartRepository.isOpen(userId)
         // if not, open cart and add product
-        if (!isCartOpen) cartId = this.open(userId)
+        if (!isCartOpen) cartId = await this.open(userId)
         // check if cart has product
         const hasProduct = await this.hasProduct(cartId, productId)
         if (hasProduct) return this.update(userId, { productId, increasedBy: 1 })
@@ -40,9 +40,11 @@ class CartService {
         return {...product, price: productPrice}
     }
     
-    static async open(cart) {
+    static async open(userId) {
         // add cartId to cart
-        cart.cartId = uuidV4()
+        const cart = {}
+        cart.userId = userId
+        cart.id = uuidV4()
         // open cart
        return await cartRepository.open(cart)
     }
@@ -56,9 +58,9 @@ class CartService {
             // update cart
             const product = await purchaseRepository.updateCart(cartId, data)
             const productPrice = await productRepository.getById(data.productId).price
-            return {...product, price: productPrice}
+            return { ...product, price: productPrice }
         }
-        return {message: "cannot remove inexistent product in cart"}  
+        return { message: "cannot remove inexistent product in cart" }  
     }
        
     
@@ -78,6 +80,10 @@ class CartService {
     }
     static async close(id) {
         return await cartRepository.close(id)
+    }
+
+    static async getAllIDsByUserId(userId) {
+        return await cartRepository.getAllIDsByUserId(userId)
     }
 }
 

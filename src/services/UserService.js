@@ -12,6 +12,7 @@ class UserService {
         if (!idExists) return {}
         const addressResult = await AddressService.getByUserId(id)
         const userResult = await userRepository.getById(id)
+        delete userResult.password
         return {...userResult, ...addressResult}
     }
 
@@ -44,8 +45,8 @@ class UserService {
         const { name, password, email, street, city, province, postalCode, complement } = data
         const user = { name, password, email }
         const address = { street, city, province, postalCode, complement }
-        const addressResult = await AddressService.add(address)
-        const userResult = await userRepository.add(user)
+        const addressResult = await AddressService.update(id, address)
+        const userResult = await userRepository.update(id, user)
         return {...userResult, ...addressResult}
     }
 

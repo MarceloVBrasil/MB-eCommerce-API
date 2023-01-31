@@ -169,12 +169,14 @@ class ProductController {
   }
 
   static async add(req, res) {
+
     try {
-      await ProductSchema.add().validate(req.body)
+      await ProductSchema.add().validate({...req.body})
       req.body.id = uuidV4()
+      req.body.image = `${SERVER_URL}/images/${req.file.filename}`
       const result = await ProductService.add(req.body)
       if (!Object.keys(result).length) res.status(400).json({ message: "product already registered" })
-      else res.json(result)
+      else res.json({message: "product cerated successfully"})
 
     } catch (error) {
       res.status(503).json({message: error.message})
@@ -184,9 +186,10 @@ class ProductController {
   static async update(req, res) {
     try {
       await ProductSchema.update().validate({ ...req.params, ...req.body })
+      req.body.image = `${SERVER_URL}/images/${req.file.filename}`
       const result = await ProductService.update(req.params.id, req.body)
       if (!Object.keys(result).length) return res.status(400).json({ message: "product not found" })
-      res.json(result)
+      res.json({message: "product edited successfully"})
     } catch (error) {
       res.status(503).json({message: error.message})
     }

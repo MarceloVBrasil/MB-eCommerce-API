@@ -13,9 +13,10 @@ const authorize = require('../../middleware/authorize');
 
 router.route("/")
     .post(OrderController.add)
-router.route("admin")
+router.route("/admin")
     .get(OrderController.getAll)
 router.route("/:userId")
     .get(OrderController.getByUserId)
-
+router.route("/:userId/:orderId")
+    .get(OrderController.getById)
 module.exports = router;

@@ -16,7 +16,6 @@ class ProductSchema {
             description: string().required(),
             price: number().positive().required(),
             quantity: number().positive().integer().required(),
-            image: mixed().required().test('isFileValid', (filename) => isFileValid(filename)),
             brand: string().required(),
             category: string().required()
         })
@@ -29,7 +28,6 @@ class ProductSchema {
             description: string().required(),
             price: number().positive().required(),
             quantity: number().positive().integer().required(),
-            image: mixed().required().test('isFileValid', (filename) => isFileValid(filename)),
             brand: string().required(),
             category: string().required()
         })

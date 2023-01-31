@@ -1,5 +1,8 @@
 const stripe = require("stripe")("sk_test_51M3lWoBv6xxhS7gsfIUIgtVQf5to2Z1YHLbLH7RtoRnJgikAtapiqBwofni4UrZVF3XSDNqgvGfwgEnG0cbWReZu0002X32Wi8")
+const { PurchaseRepository } = require("../repositories/PurchaseRepository")
 const { UserService } = require("./UserService")
+
+const purchaseRepository = new PurchaseRepository()
 
 class PurchaseService {
     constructor() { }
@@ -29,6 +32,10 @@ class PurchaseService {
             success_url: `${url}?sessionId={CHECKOUT_SESSION_ID}`,                 
             cancel_url: `${url}`,
         });
+    }
+
+    static async getProductsByCartId(cartId) {
+        return await purchaseRepository.getProductsByCartId(cartId)
     }
 }
 

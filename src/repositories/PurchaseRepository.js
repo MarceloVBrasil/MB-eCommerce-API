@@ -1,12 +1,11 @@
 class PurchaseRepository {
     constructor() {
         this._purchases = [
-            {id: '8321ce9f-01cc-4c9e-940e-ae9216e4477a', productId: 'f41e4377-d911-4c8a-8c04-54a948357417', quantity: 1, cartId: '58b1df5f-48bf-4004-8abf-6fc16bb9d798'}
+          //  {id: '8321ce9f-01cc-4c9e-940e-ae9216e4477a', productId: 'f41e4377-d911-4c8a-8c04-54a948357417', quantity: 1, cartId: '58b1df5f-48bf-4004-8abf-6fc16bb9d798'}
         ]
     }
 
-   async getProductsByCartId(cartId) {
-    console.log(this._purchases)
+    async getProductsByCartId(cartId) {
         return this._purchases.filter(purchase => purchase.cartId === cartId)
     }
 

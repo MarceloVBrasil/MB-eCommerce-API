@@ -52,8 +52,10 @@ function isProvinceValid(province) {
 }
 
 function isFileValid(filename) {
+  console.log(" getting file extension")
   const acceptedFormats = ["png", "jpg", "jpeg", "webp"]
   const extension = getFileExtension(filename)
+  console.log('extension')
   return acceptedFormats.includes(extension)
 }
 

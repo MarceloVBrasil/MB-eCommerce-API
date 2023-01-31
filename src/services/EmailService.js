@@ -10,7 +10,7 @@ class EmailService {
 
     static sendPurchaseReceipt(client, order) {
         const total = calculateTotal(order.products)
-        const products = formatProductsData(order.products)
+      const products = formatProductsData(order.products)
     
          ejs.renderFile("./templates/purchaseReceipt.ejs",
              {
@@ -20,8 +20,8 @@ class EmailService {
                  street: "123 Street",
                  province: "ON",
                  postalCode: "A0A-0A0",
-                 orderId: order.orderId,
-                 date: order.date,
+                 orderId: order.id,
+                 date: order.order_date,
                  products: products,
                 total: priceTag(total)
         },
@@ -48,8 +48,8 @@ class EmailService {
                  street: client.street,
                  province: client.province,
                  postalCode: client.postalCode,
-                 orderId: order.orderId,
-                 date: order.date,
+                 orderId: order.id,
+                 date: order.order_date,
                  products: products,
                 total: priceTag(total)
         },

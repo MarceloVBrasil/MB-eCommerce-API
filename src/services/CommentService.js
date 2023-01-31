@@ -10,6 +10,7 @@ class CommentService {
         const comments = await commentRepository.getAll(productId)
         const namedComments = comments.map((comment) => {
             const { name } = userRepository.getById(comment.userId)
+            console.log(name)
             return  { ...comment, name }
         })
         
