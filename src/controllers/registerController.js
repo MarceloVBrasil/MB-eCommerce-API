@@ -5,14 +5,14 @@ const { isEmailValid, isPostalCodeValid } = require("../utils/validate");
 
 exports.registerNewUser = async (req, res) => {
   try {
-      const { name, password, email, street, city, province, postalCode, complement } = req.body
+    const { name, password, email, street, city, province, postalCode, complement } = req.body
     if (!name || !password || !email || !street || !city || !province || !postalCode) return res.status(400).send("Error: Fill in required fields")
-    if(!isEmailValid(email)) return res.status(400).send("Error: Please enter a valid email")
+    if (!isEmailValid(email)) return res.status(400).send("Error: Please enter a valid email")
     if (!isPostalCodeValid(postalCode)) return res.status(400).send("Error: Please enter a valid postal code")
 
     const userId = uuidV4()
     const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()
-    
+
     const newUser = { name: capitalizedName, password: bcrypt.hashSync(password), email }
     newUser.id = userId
 
@@ -20,9 +20,9 @@ exports.registerNewUser = async (req, res) => {
 
     const newUserAddress = { street, city, province, complement, postalCode, user_id: userId }
     newUserAddress.id = uuidV4()
-      await knex("address").insert(newUserAddress)
-      res.status(201).json([newUser, newUserAddress])
-      
+    await knex("address").insert(newUserAddress)
+    res.status(201).json([newUser, newUserAddress])
+
   } catch (error) {
     res.status(503).send("Error registering new user");
   }

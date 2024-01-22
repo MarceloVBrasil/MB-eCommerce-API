@@ -1,8 +1,7 @@
 require("dotenv").config()
-const knex = require("knex")(require("../../knexfile"));
 const { REMOTE_SERVER_URL, SERVER_URL } = process.env
 const { v4: uuidV4 } = require("uuid");
-const { ProductSchema } = require("../schemas/ProductSchema");
+const { ProductSchema } = require("./schemas/ProductSchema");
 const { ProductService } = require("../services/ProductService");
 
 // exports.getAll = async (_req, res) => {
@@ -26,7 +25,7 @@ const { ProductService } = require("../services/ProductService");
 //       .select("product.id", "product.name", "product.price", "product.image", "product.description", "product.quantity" , "brand.name as brandName", `category.name as categoryName`)
 //       .where("product.id", productId)
 //       .first()
-    
+
 //     res.json(product)
 //   } catch (error) {
 //     res.status(503).send("Error getting product data")
@@ -36,7 +35,7 @@ const { ProductService } = require("../services/ProductService");
 // exports.createProduct = async (req, res) => {
 //   try {
 //      const { name, description, price, quantity, brand, category } = req.body
-    
+
 //     if(!name) return res.status(401).send("name is required")
 //     if(!description) return res.status(401).send("description is required")
 //     if(!price) return res.status(401).send("price is required")
@@ -44,10 +43,10 @@ const { ProductService } = require("../services/ProductService");
 //     if(!brand) return res.status(401).send("brand is required")
 //     if (!category) return res.status(401).send("category is required")
 //     if (!req.file.filename) return res.status(401).send("file is required")
-    
+
 //     let brand_id = await getBrandId(brand)
 //     if(!brand_id) brand_id = await createNewBrand(brand)
-    
+
 //     let category_id = await getCategoryId(category)
 //     if (!category_id) category_id = await createNewCategory(category)
 
@@ -75,7 +74,7 @@ const { ProductService } = require("../services/ProductService");
 // exports.updateProduct = async (req, res) => {
 //   try {
 //     const { id, name, description, price, quantity, brand, category } = req.body
-    
+
 //     if(!name) return res.status(401).send("name is required")
 //     if(!description) return res.status(401).send("description is required")
 //     if(!price) return res.status(401).send("price is required")
@@ -83,10 +82,10 @@ const { ProductService } = require("../services/ProductService");
 //     if(!brand) return res.status(401).send("brand is required")
 //     if (!category) return res.status(401).send("category is required")
 //     if (!req.file.filename) return res.status(401).send("file is required")
-    
+
 //     let brand_id = await getBrandId(brand)
 //     if(!brand_id) brand_id = await createNewBrand(brand)
-    
+
 //     let category_id = await getCategoryId(category)
 //     if (!category_id) category_id = await createNewCategory(category)
 
@@ -146,13 +145,13 @@ const { ProductService } = require("../services/ProductService");
 
 class ProductController {
   constructor() { }
-  
+
   static async getAll(req, res) {
     try {
       const result = await ProductService.getAll()
       res.json(result)
     } catch (error) {
-      res.status(503).json({message: error.message})
+      res.status(503).json({ message: error.message })
     }
   }
 
@@ -164,22 +163,22 @@ class ProductController {
       else res.json(result)
 
     } catch (error) {
-      res.status(503).json({message: error.message})
+      res.status(503).json({ message: error.message })
     }
   }
 
   static async add(req, res) {
 
     try {
-      await ProductSchema.add().validate({...req.body})
+      await ProductSchema.add().validate({ ...req.body })
       req.body.id = uuidV4()
       req.body.image = `${SERVER_URL}/images/${req.file.filename}`
       const result = await ProductService.add(req.body)
       if (!Object.keys(result).length) res.status(400).json({ message: "product already registered" })
-      else res.json({message: "product cerated successfully"})
+      else res.json({ message: "product cerated successfully" })
 
     } catch (error) {
-      res.status(503).json({message: error.message})
+      res.status(503).json({ message: error.message })
     }
   }
 
@@ -189,9 +188,9 @@ class ProductController {
       req.body.image = `${SERVER_URL}/images/${req.file.filename}`
       const result = await ProductService.update(req.params.id, req.body)
       if (!Object.keys(result).length) return res.status(400).json({ message: "product not found" })
-      res.json({message: "product edited successfully"})
+      res.json({ message: "product edited successfully" })
     } catch (error) {
-      res.status(503).json({message: error.message})
+      res.status(503).json({ message: error.message })
     }
   }
 
@@ -201,8 +200,8 @@ class ProductController {
       const result = await ProductController.delete(req.params.id)
       res.json(result)
     } catch (error) {
-      res.status(503).json({message: error.message})
+      res.status(503).json({ message: error.message })
     }
   }
 }
- module.exports = { ProductController }
+module.exports = { ProductController }

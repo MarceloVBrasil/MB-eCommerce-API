@@ -1,9 +1,9 @@
 const { object, string, number, mixed } = require("yup")
-const { isFileValid } = require("../utils/validate")
+const { isFileValid } = require("../../utils/validate")
 
 class ProductSchema {
     constructor() { }
-    
+
     static getById() {
         return object().shape({
             id: string().required().uuid()

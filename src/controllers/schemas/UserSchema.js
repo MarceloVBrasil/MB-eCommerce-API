@@ -1,9 +1,9 @@
 const { object, string } = require("yup")
-const {isPostalCodeValid, isProvinceValid} = require("../utils/validate")
+const { isPostalCodeValid, isProvinceValid } = require("../../utils/validate")
 
 class UserSchema {
     constructor() { }
-    
+
     static getById() {
         return object().shape({
             id: string().required().uuid()

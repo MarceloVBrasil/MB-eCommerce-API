@@ -1,6 +1,6 @@
-const knex = require("knex")(require("../../knexfile"));
+
 const stripe = require("stripe")("sk_test_51M3lWoBv6xxhS7gsfIUIgtVQf5to2Z1YHLbLH7RtoRnJgikAtapiqBwofni4UrZVF3XSDNqgvGfwgEnG0cbWReZu0002X32Wi8")
-const { PurchaseSchema } = require("../schemas/PurchaseSchema");
+const { PurchaseSchema } = require("./schemas/PurchaseSchema");
 const { PurchaseService } = require("../services/PurchaseService");
 const { getOriginURL } = require("../utils/getOriginURL");
 const cartController = require("./cartController")
@@ -31,7 +31,7 @@ const { v4: uuidV4 } = require("uuid")
 //             .where("product_id", productId)
 //             .andWhere("cart_id", cartId)
 //             .first()
-        
+
 //         res.json(data)
 //     } catch (error) {
 //         res.status(503).send("Error checking if item already exists in cart")
@@ -45,7 +45,7 @@ const { v4: uuidV4 } = require("uuid")
 //         if(!productId) return res.status(400).send("Invalid product id")
 //         if (!cartId) return res.status(400).send("Invalid cart id")
 //         if (increment !== true && increment !== false) return res.status(400).send("Invalid increment")
-        
+
 //         let data;
 //         if (increment) {
 //             data = await knex("purchase")
@@ -59,7 +59,7 @@ const { v4: uuidV4 } = require("uuid")
 //                 .andWhere("quantity", ">", 0)
 //             .decrement('quantity', 1)
 //         }
-         
+
 //         res.json(data)
 //     } catch (error) {
 //         res.status(503).send("Error updating quantity")
@@ -78,7 +78,7 @@ const { v4: uuidV4 } = require("uuid")
 //             .andWhere("cart.status", "open")
 //         .first()
 //         res.json(total["sum(`quantity`)"])
-        
+
 //     } catch (error) {
 //         res.status(503).send("Error getting total quantity in cart")
 //     }
@@ -94,9 +94,9 @@ const { v4: uuidV4 } = require("uuid")
 //             .select("product_id", "quantity")
 //             .where("cart_id", cartId)
 //         .andWhere("cart.status", "open")
-        
+
 //         res.json(data)
-        
+
 //     } catch (error) {
 //         res.status(503).send("Error getting quantity per product")
 //     }
@@ -114,9 +114,9 @@ const { v4: uuidV4 } = require("uuid")
 //             .where("product_id", productId)
 //             .andWhere("cart_id", cartId)
 //         .first()
-        
+
 //         res.json(data)
-        
+
 //     } catch (error) {
 //         res.status(503).send("Error getting quantity per product")
 //     }
@@ -132,9 +132,9 @@ const { v4: uuidV4 } = require("uuid")
 //             .select("product.price", "purchase.quantity")
 //             .where("cart_id", cartId)
 //             .andWhere("cart.status", "open")
-        
+
 //         const total = data.map(d => d.price * d.quantity).reduce((total, value) => total + value)
-        
+
 //         res.json(total)
 //     } catch (error) {
 //         res.status(503).send("Error getting total amount")
@@ -164,7 +164,7 @@ const { v4: uuidV4 } = require("uuid")
 //     const { amount, name, userId } = req.body
 //     if(!userId) return res.status(400).send("Invalid user id")
 //     if (isNaN(amount) || amount <= 0) return res.status(400).send("Invalid amount")
-    
+
 //     const index = req.rawHeaders.findIndex(key => key === 'Origin')
 //     const originURL = req.rawHeaders[index + 1]
 
@@ -193,7 +193,7 @@ const { v4: uuidV4 } = require("uuid")
 
 class PurchaseController {
     constructor() { }
-    
+
     // pay (userId => void) => stay at controller                    - POST
     static async pay(req, res) {
         try {
@@ -202,7 +202,7 @@ class PurchaseController {
             const result = await PurchaseService.pay(req.params.userId, req.body.amount, originUrl)
             res.json(result)
         } catch (error) {
-            res.status(503).json({message: error})
+            res.status(503).json({ message: error })
         }
     }
 }

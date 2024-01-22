@@ -1,13 +1,13 @@
 class UserRepository {
 
-    constructor() { 
+    constructor() {
         this._users = [
-            {id: "11c6dbf0-b2db-4520-b306-ed7f1534e49b", name: "Marcelo Bra", password: "123", email: "marcelo.vital.brasil@gmail.com"},
-            {id: "73ca38a2-9870-458a-8b89-bfb246e22e7d", name: "Admin", password: "123", email: "marcelovitalbrasil92@gmail.com", admin:1},
-            {id: "edb2ad26-9479-4aa0-908a-96acb30ed02a", name: "Hugo Vit", password: "123", email: "marcelodvbrasil@icloud.com"},
+            { id: "11c6dbf0-b2db-4520-b306-ed7f1534e49b", name: "Marcelo Bra", password: "$2a$10$9JEKWwPSq1V5.fq8anvcx.VkK43t9CJjkKH8E2fgq/InQfAiZHpdy", email: "marcelo.vital.brasil@gmail.com" },
+            { id: "73ca38a2-9870-458a-8b89-bfb246e22e7d", name: "Admin", password: "$2a$10$9JEKWwPSq1V5.fq8anvcx.VkK43t9CJjkKH8E2fgq/InQfAiZHpdy", email: "marcelovitalbrasil92@gmail.com", admin: 1 },
+            { id: "edb2ad26-9479-4aa0-908a-96acb30ed02a", name: "Hugo Vit", password: "$2a$10$9JEKWwPSq1V5.fq8anvcx.VkK43t9CJjkKH8E2fgq/InQfAiZHpdy", email: "marcelodvbrasil@icloud.com" },
         ]
     }
-    
+
     getById(id) {
         return this._users.find(user => user.id === id)
     }
@@ -16,14 +16,14 @@ class UserRepository {
         return this._users.find(user => user.email === email)
     }
 
-    async add(user) {        
+    async add(user) {
         this._users.push(user)
         return user
     }
 
     async update(id, user) {
         const userIndex = this._users.findIndex(user => user.id === id)
-        this._users[userIndex] = {...this._users[userIndex], ...user}
+        this._users[userIndex] = { ...this._users[userIndex], ...user }
 
         return this._users[userIndex]
     }

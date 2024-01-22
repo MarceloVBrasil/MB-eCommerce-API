@@ -1,9 +1,9 @@
 const knex = require("knex")(require("../../knexfile"));
 const bcrypt = require("bcryptjs");
 const { validateEmail, validatePostalCode } = require("../utils/validate");
-const { UserSchema } = require("../schemas/UserSchema");
+const { UserSchema } = require("./schemas/UserSchema");
 const { UserService } = require("../services/UserService");
-const {v4: uuidV4} = require("uuid");
+const { v4: uuidV4 } = require("uuid");
 
 // exports.getUserEmail = async (id) =>  {
 //     const data = await knex
@@ -20,7 +20,7 @@ const {v4: uuidV4} = require("uuid");
 //         const { userId } = req.params
 //         if(!validateEmail(email)) res.status(400).send("Error: Please enter a valid email")
 //         if (!validatePostalCode(postalCode)) res.status(400).send("Error: Please enter a valid postal code")
-        
+
 //         const userEmail = await getUserEmail(userId)
 //         const emailExists = await checkIfEmailExists(email)
 //         if (!name || !password || !email || !street || !city || !province || !postalCode)
@@ -87,24 +87,24 @@ const {v4: uuidV4} = require("uuid");
 
 class UserController {
     constructor() { }
-    
+
     // getUserEmail -> X -- OK
     // getUserContactInfo -> getById -- OK
-   static async getById(req, res) {
-       try {
+    static async getById(req, res) {
+        try {
             await UserSchema.getById().validate(req.params)
             const result = await UserService.getById(req.params.id)
-           if (!Object.keys(result).length) return res.status(400).json({ message: "user not found" })
-           res.json(result)
-           
-       } catch (error) {
-        res.status(503).json({message: error.message})
-       }
+            if (!Object.keys(result).length) return res.status(400).json({ message: "user not found" })
+            res.json(result)
+
+        } catch (error) {
+            res.status(503).json({ message: error.message })
+        }
     }
     // getUserId -> getByEmail -- OK
     static async getByEmail(email) {
         try {
-            await UserSchema.getByEmail().validate({email})
+            await UserSchema.getByEmail().validate({ email })
             const result = await UserService.getByEmail(email)
             return result
         } catch (error) {
@@ -121,7 +121,7 @@ class UserController {
             if (!Object.keys(result).length) return res.status(400).json({ message: "email already registered" })
             res.json(result)
         } catch (error) {
-           res.status(503).json({message: error.message}) 
+            res.status(503).json({ message: error.message })
         }
     }
     // checkIfEmailExists -> move to user service as checkExistence -- OK
@@ -134,18 +134,18 @@ class UserController {
             res.json(result)
 
         } catch (error) {
-            res.status(503).json({message: error.message}) 
+            res.status(503).json({ message: error.message })
         }
     }
     // new function -> delete
     static async delete(req, res) {
         try {
-            
+
             await UserSchema.delete().validate(req.params)
             const userResult = await UserService.delete(req.params.id)
             res.json(userResult)
         } catch (error) {
-            res.status(503).json({message: error.message})
+            res.status(503).json({ message: error.message })
         }
     }
     // from login controller -> login
@@ -154,9 +154,9 @@ class UserController {
             await UserSchema.login().validate(req.body)
             const result = await UserService.login(req.body)
             if (!Object.keys(result).length) res.status(400).json({ message: "wrong credentials" })
-           else res.json(result)
+            else res.json(result)
         } catch (error) {
-            res.status(503).json({message: error.message})
+            res.status(503).json({ message: error.message })
         }
     }
 }

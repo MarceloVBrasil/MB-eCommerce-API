@@ -1,6 +1,4 @@
-const knex = require("knex")(require("../../knexfile"));
-const { v4: uuidV4 } = require("uuid");
-const { CartSchema } = require("../schemas/CartSchema");
+const { CartSchema } = require("./schemas/CartSchema");
 const { CartService } = require("../services/CartService");
 
 // exports.createNewCart = async (req, res) => {
@@ -85,7 +83,7 @@ class CartController {
             const result = await CartService.getProducts(req.params.userId)
             res.json(result)
         } catch (error) {
-            res.status(503).json({message: error})
+            res.status(503).json({ message: error })
         }
     }
 
@@ -96,7 +94,7 @@ class CartController {
             const result = await CartService.add(req.params.userId, req.body.productId)
             res.json(result)
         } catch (error) {
-            res.status(503).json({message: error})
+            res.status(503).json({ message: error })
         }
     }
 
@@ -107,7 +105,7 @@ class CartController {
             const result = await CartService.update(req.params.userId, req.body)
             res.json(result)
         } catch (error) {
-            res.status(503).json({message: error})
+            res.status(503).json({ message: error })
         }
     }
 }

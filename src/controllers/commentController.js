@@ -1,6 +1,5 @@
-const knex = require("knex")(require("../../knexfile"));
 const { v4: uuidV4 } = require("uuid");
-const { CommentSchema } = require("../schemas/CommentSchema");
+const { CommentSchema } = require("./schemas/CommentSchema");
 const { CommentService } = require("../services/CommentService");
 
 // exports.getAll = async (req, res) => {
@@ -41,7 +40,7 @@ class CommentController {
       const result = await CommentService.getAll(req.params.productId)
       res.json(result)
     } catch (error) {
-      res.status(503).json({message: error})
+      res.status(503).json({ message: error })
     }
   }
 
@@ -53,7 +52,7 @@ class CommentController {
       const result = await CommentService.add(req.params.productId, req.body)
       res.json(result)
     } catch (error) {
-      res.status(503).json({message: error})
+      res.status(503).json({ message: error })
     }
   }
 }
